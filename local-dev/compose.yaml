@@ -31,6 +31,17 @@ services:
       - "3000:3000"
     volumes:
       - ../api:/usr/src/app
+  web_container:
+    build:
+      context: ../web-app
+      dockerfile: local.dockerfile
+    container_name: next_web_container
+    tty: true
+    restart: always
+    volumes:
+      - ../web-app:/usr/src/app
+    ports:
+      - "3001:3000"
   # schema_container:
   #   container_name: schema_container
   #   build:
