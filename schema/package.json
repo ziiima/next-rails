@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "cli:tsp": "tsp"
+    "cli:tsp": "tsp",
+    "fmt": "tsp format \"**/*.tsp\"",
+    "check:fmt": "tsp format --check \"**/*.tsp\"",
+    "build": "tsp compile ."
   },
   "peerDependencies": {
     "@typespec/compiler": "latest",
