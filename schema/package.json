@@ -1,0 +1,21 @@
+{
+  "name": "schema",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "cli:tsp": "tsp"
+  },
+  "peerDependencies": {
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/openapi3": "latest",
+    "@typespec/rest": "latest"
+  },
+  "devDependencies": {
+    "@typespec/compiler": "^0.61.2",
+    "@typespec/http": "latest",
+    "@typespec/openapi3": "latest",
+    "@typespec/rest": "latest"
+  },
+  "private": true
+}
