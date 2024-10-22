@@ -1,0 +1,45 @@
+services:
+  # db_container:
+  #   build:
+  #     context: ./db
+  #     dockerfile: dockerfile
+  #   container_name: db_container
+  #   tty: true
+  #   restart: always
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: demo
+  #     TZ: "Asia/Tokyo"
+  # db_adminer_container:
+  #   container_name: adminer
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+  api_container:
+    build:
+      context: ../api
+      dockerfile: local.dockerfile
+    container_name: rails_api_container
+    tty: true
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../api:/usr/src/app
+  # schema_container:
+  #   container_name: schema_container
+  #   build:
+  #     context: ./tmp-docker
+  #     dockerfile: dockerfile
+  #   tty: true
+  #   restart: always
+  #   volumes:
+  #     - .:/usr/src/app
+
+volumes:
+  db_data: {}
