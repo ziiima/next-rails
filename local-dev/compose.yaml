@@ -45,7 +45,7 @@ services:
   schema_container:
     container_name: schema_container
     build:
-      context: ../tmp-docker
+      context: ../schema
       dockerfile: dockerfile
     tty: true
     restart: always

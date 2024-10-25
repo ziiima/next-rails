@@ -1,12 +1,14 @@
 {
   "name": "schema",
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
     "cli:tsp": "tsp",
+    "cli:tsc": "tsc",
+    "cli:ts-node": "ts-node",
     "fmt": "tsp format \"**/*.tsp\"",
-    "check:fmt": "tsp format --check \"**/*.tsp\"",
-    "build": "tsp compile ."
+    "fmt:check": "tsp format --check \"**/*.tsp\"",
+    "build": "tsp compile ./src",
+    "sync:ui": "ts-node ./scripts/sync/main.ts"
   },
   "peerDependencies": {
     "@typespec/compiler": "latest",
@@ -15,10 +17,17 @@
     "@typespec/rest": "latest"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "^1.0.7",
+    "@types/node": "^22.7.9",
     "@typespec/compiler": "^0.61.2",
     "@typespec/http": "latest",
     "@typespec/openapi3": "latest",
-    "@typespec/rest": "latest"
+    "@typespec/rest": "latest",
+    "tslib": "^2.8.0"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
 }
