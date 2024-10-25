@@ -1,25 +1,25 @@
 services:
-  # db_container:
-  #   build:
-  #     context: ./db
-  #     dockerfile: dockerfile
-  #   container_name: db_container
-  #   tty: true
-  #   restart: always
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #   ports:
-  #     - "3306:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
-  #     MYSQL_DATABASE: demo
-  #     TZ: "Asia/Tokyo"
-  # db_adminer_container:
-  #   container_name: adminer
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
+  db_container:
+    build:
+      context: ../db
+      dockerfile: dockerfile
+    container_name: db_container
+    tty: true
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+      TZ: "Asia/Tokyo"
+  db_adminer_container:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
   api_container:
     build:
       context: ../api

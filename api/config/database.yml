@@ -11,7 +11,18 @@ default: &default
 
 development:
   <<: *default
-  database: storage/development.sqlite3
+  adapter: mysql2
+  encoding: utf8
+  database: demo
+  username: root
+  password: root
+  host: db_container
+  port: 3306
+  flags:
+    - -COMPRESS
+    - FOUND_ROWS
+    - MULTI_STATEMENTS
+  secure_auth: false
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
