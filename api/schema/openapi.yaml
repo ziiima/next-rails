@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags:
+  - name: blog
+paths:
+  /:
+    post:
+      operationId: createBlogCotnent
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dto:
+                  $ref: '#/components/schemas/CreateBlogContent'
+              required:
+                - dto
+  /blogs:
+    post:
+      operationId: Blogs_create
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+      tags:
+        - blog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dto:
+                  $ref: '#/components/schemas/CreateBlogContent'
+              required:
+                - dto
+    get:
+      operationId: Blogs_list
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - currentPage
+                  - perPage
+                  - totalCount
+                  - items
+                properties:
+                  currentPage:
+                    type: integer
+                    format: uint64
+                  perPage:
+                    type: integer
+                    format: uint64
+                  totalCount:
+                    type: integer
+                    format: uint64
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Blog'
+      tags:
+        - blog
+components:
+  schemas:
+    Blog:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: uint64
+          readOnly: true
+    CreateBlogContent:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          $ref: '#/components/schemas/blogTitle'
+    blogTitle:
+      type: string
+      minLength: 1
+      maxLength: 255
+    uuidv4:
+      type: string
+      format: uuid

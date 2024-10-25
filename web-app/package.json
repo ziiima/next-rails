@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "orval --config ./orval.config.ts"
   },
   "dependencies": {
     "next": "15.0.0",
@@ -21,6 +22,7 @@
     "eslint-config-next": "15.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "orval": "^7.2.0",
     "postcss": "^8",
     "prettier": "3.3.3",
     "scaffdog": "^4.1.0",

@@ -4,11 +4,13 @@
   "scripts": {
     "cli:tsp": "tsp",
     "cli:tsc": "tsc",
+    "cli:spectral": "spectral",
     "cli:ts-node": "ts-node",
     "fmt": "tsp format \"**/*.tsp\"",
     "fmt:check": "tsp format --check \"**/*.tsp\"",
     "build": "tsp compile ./src",
-    "sync:ui": "ts-node ./scripts/sync/main.ts"
+    "sync:ui": "ts-node ./scripts/sync/main.ts",
+    "lint:openapi": "spectral lint ./tsp-output/@typespec/openapi3/openapi.yaml"
   },
   "peerDependencies": {
     "@typespec/compiler": "latest",
@@ -17,6 +19,7 @@
     "@typespec/rest": "latest"
   },
   "devDependencies": {
+    "@stoplight/spectral-cli": "^6.13.1",
     "@tsconfig/recommended": "^1.0.7",
     "@types/node": "^22.7.9",
     "@typespec/compiler": "^0.61.2",
