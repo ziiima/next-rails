@@ -9,7 +9,7 @@ const SlugPage = () => {
   return (
     <>
       <Navigation />
-      <p>Hello, I'm the {pathname} page</p>
+      <p>Hello,m the {pathname} page</p>
     </>
   )
 }

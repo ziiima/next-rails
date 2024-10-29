@@ -6,6 +6,8 @@
     "cli:tsc": "tsc",
     "cli:spectral": "spectral",
     "cli:ts-node": "ts-node",
+    "cli:scaffdog": "scaffdog",
+    "gen": "scaffdog generate",
     "fmt": "tsp format \"**/*.tsp\"",
     "fmt:check": "tsp format --check \"**/*.tsp\"",
     "build": "tsp compile ./src",
@@ -26,6 +28,7 @@
     "@typespec/http": "latest",
     "@typespec/openapi3": "latest",
     "@typespec/rest": "latest",
+    "scaffdog": "^4.1.0",
     "tslib": "^2.8.0"
   },
   "private": true,

@@ -10,6 +10,12 @@
     "gen": "orval --config ./orval.config.ts"
   },
   "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "@as-integrations/next": "^3.1.0",
+    "@graphql-tools/graphql-file-loader": "^8.0.2",
+    "@graphql-tools/load": "^8.0.3",
+    "@graphql-tools/schema": "^10.0.7",
+    "graphql": "^16.9.0",
     "next": "15.0.0",
     "react": "19.0.0-rc-65a56d0e-20241020",
     "react-dom": "19.0.0-rc-65a56d0e-20241020"
