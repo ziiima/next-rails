@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "gen": "orval --config ./orval.config.ts"
+    "gen:openapi": "orval --config ./orval.config.ts",
+    "gen:page": "scaffdog generate",
+    "cli:scaffdog": "scaffdog"
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",

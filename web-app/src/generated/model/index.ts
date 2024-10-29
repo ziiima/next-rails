@@ -5,10 +5,12 @@
  * OpenAPI spec version: 0.0.0
  */
 
+export * from './article'
 export * from './blog'
 export * from './blogTitle'
 export * from './blogsCreateBody'
 export * from './blogsList200'
 export * from './createBlogContent'
 export * from './createBlogCotnentBody'
+export * from './listArticles'
 export * from './uuidv4'

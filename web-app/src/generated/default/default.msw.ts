@@ -6,12 +6,28 @@
  */
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
-import type { Blog } from '.././model'
+import type { Blog, ListArticles } from '.././model'
 
 export const getCreateBlogCotnentResponseMock = (
   overrideResponse: Partial<Blog> = {},
 ): Blog => ({
   id: faker.number.int({ min: undefined, max: undefined }),
+  ...overrideResponse,
+})
+
+export const getListArticlesResponseMock = (
+  overrideResponse: Partial<ListArticles> = {},
+): ListArticles => ({
+  items: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    body: faker.word.sample(),
+    created_at: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    title: faker.word.sample(),
+    updated_at: faker.word.sample(),
+  })),
   ...overrideResponse,
 })
 
@@ -37,4 +53,30 @@ export const getCreateBlogCotnentMockHandler = (
     )
   })
 }
-export const getDefaultMock = () => [getCreateBlogCotnentMockHandler()]
+
+export const getListArticlesMockHandler = (
+  overrideResponse?:
+    | ListArticles
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<ListArticles> | ListArticles),
+) => {
+  return http.get('*/', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getListArticlesResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
+export const getDefaultMock = () => [
+  getCreateBlogCotnentMockHandler(),
+  getListArticlesMockHandler(),
+]

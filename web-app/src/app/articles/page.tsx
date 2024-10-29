@@ -1,12 +1,12 @@
 import { Navigation } from '@/components/Navigation'
 
-export const AboutPage = () => {
+export const articlesPage = () => {
   return (
     <>
       <Navigation />
-      <p>Hello m the about page</p>
+      <p>Hello page</p>
     </>
   )
 }
 
-export default AboutPage
+export default articlesPage

@@ -4,13 +4,17 @@
  * (title)
  * OpenAPI spec version: 0.0.0
  */
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   MutationFunction,
+  QueryFunction,
+  QueryKey,
   UseMutationOptions,
   UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
 } from '@tanstack/react-query'
-import type { Blog, CreateBlogCotnentBody } from '.././model'
+import type { Blog, CreateBlogCotnentBody, ListArticles } from '.././model'
 import { restclient } from '../../utils/rest-client'
 
 export const createBlogCotnent = (
@@ -79,4 +83,62 @@ export const useCreateBlogCotnent = <
   const mutationOptions = getCreateBlogCotnentMutationOptions(options)
 
   return useMutation(mutationOptions)
+}
+export const listArticles = (signal?: AbortSignal) => {
+  return restclient<ListArticles>({ url: `/`, method: 'GET', signal })
+}
+
+export const getListArticlesQueryKey = () => {
+  return [`/`] as const
+}
+
+export const getListArticlesQueryOptions = <
+  TData = Awaited<ReturnType<typeof listArticles>>,
+  TError = unknown,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listArticles>>,
+    TError,
+    TData
+  >
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getListArticlesQueryKey()
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listArticles>>> = ({
+    signal,
+  }) => listArticles(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof listArticles>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey }
+}
+
+export type ListArticlesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listArticles>>
+>
+export type ListArticlesQueryError = unknown
+
+export function useListArticles<
+  TData = Awaited<ReturnType<typeof listArticles>>,
+  TError = unknown,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof listArticles>>,
+    TError,
+    TData
+  >
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListArticlesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey
+  }
+
+  query.queryKey = queryOptions.queryKey
+
+  return query
 }

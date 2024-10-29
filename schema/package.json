@@ -8,9 +8,9 @@
     "cli:ts-node": "ts-node",
     "cli:scaffdog": "scaffdog",
     "gen": "scaffdog generate",
+    "gen:schema": "tsp compile ./src",
     "fmt": "tsp format \"**/*.tsp\"",
     "fmt:check": "tsp format --check \"**/*.tsp\"",
-    "build": "tsp compile ./src",
     "sync:ui": "ts-node ./scripts/sync/main.ts",
     "lint:openapi": "spectral lint ./tsp-output/@typespec/openapi3/openapi.yaml"
   },

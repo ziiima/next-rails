@@ -21,3 +21,13 @@ export const createBlogCotnentResponse = zod.object({
   "id": zod.number()
 })
 
+export const listArticlesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "body": zod.string(),
+  "created_at": zod.string(),
+  "updated_at": zod.string()
+}))
+})
+
