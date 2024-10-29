@@ -7,7 +7,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 COPY package.* ./
-RUN npm install
+RUN npm install -f
 
 COPY . .
 

@@ -9,7 +9,7 @@ questions:
 
 # Variables
 
-- PageTitle: `{{ inputs.name | kebab }}Page`
+- PageTitle: `{{ inputs.name | pascal }}Page`
 
 # `{{ inputs.name }}/page.tsx`
 
@@ -18,10 +18,14 @@ import { Navigation } from '@/components/Navigation'
 
 export const {{ PageTitle }} = () => {
   return (
-    <>
-      <Navigation />
-      <p>Hello page</p>
-    </>
+    <div className="grid grid-cols-4">
+      <div>
+        <Navigation />
+      </div>
+      <div>
+        <h1>{{ PageTitle }}</h1>
+      </div>
+    </div>
   )
 }
 

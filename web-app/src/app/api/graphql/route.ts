@@ -1,4 +1,4 @@
-import { authorsQuery, bookQuery, booksQuery } from '@/graphql/book/query'
+import { bookQuery } from '@/graphql/book/query'
 import { signUp } from '@/graphql/user/mutation'
 import { userQuery } from '@/graphql/user/query'
 import { ApolloServer } from '@apollo/server'
