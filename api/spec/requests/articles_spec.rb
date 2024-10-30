@@ -9,6 +9,16 @@ RSpec.describe "Articles", type: :request do
     end
   end
 
+  describe "POST /articles" do
+    include Committee::Rails::Test::Methods
+    it "ok" do
+      expect {
+        post "/articles", params: { dto: { title: "title", body: "bodybodybody" } }
+      }.to change(Article, :count).by(1)
+      assert_response_schema_confirm(200)
+    end
+  end
+
   describe "GET /articles/:id" do
     include Committee::Rails::Test::Methods
     let(:article) { Article.create(title: "title", body: "bodybodybody") }
@@ -19,12 +29,12 @@ RSpec.describe "Articles", type: :request do
     end
   end
 
-  describe "POST /articles" do
+  describe "PUT /articles/:id" do
     include Committee::Rails::Test::Methods
+    let(:article) { Article.create(title: "title", body: "bodybodybody") }
+
     it "ok" do
-      expect {
-        post "/articles", params: { dto: { title: "title", body: "bodybodybody" } }
-      }.to change(Article, :count).by(1)
+      put "/articles/#{article.id}", params: { dto: { title: "titlev2", body: "bodybodybodyv2" } }
       assert_response_schema_confirm(200)
     end
   end

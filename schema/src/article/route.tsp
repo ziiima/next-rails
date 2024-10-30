@@ -6,34 +6,56 @@
 import "@typespec/http";
 import "@typespec/openapi";
 import "./model.tsp";
+import "../rest-util/error-response.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
-using ArticleModule;
 
-model ListArticles {
-  items: Article[];
-}
+namespace ArticleAPI {
+  model ListItems<Model> {
+    items: Model[]
+  }
 
-model ArticleResponse {
-  article: Article;
-}
+  model ArticleListResponse<Model> {
+    @statusCode
+    status: 200;
 
-namespace ArticleModule.API {
-  op listArticles(): ListArticles;
-  op resourceReadArticle(@path id: integer): ArticleResponse;
-  op createArticle(dto: ArticleOperation.CreateArticleDTO): ArticleResponse;
+    @body
+    items: ListItems<Model>;
+  }
+
+  model Item<Model> {
+    article: Model
+  }
+
+  model ArticleItemResponse<Model, Status = 200> {
+    @statusCode
+    statusCode: Status;
+
+    @body
+    article: Item<Model>
+  }
 }
 
 @tag("article")
 @route("/articles")
 interface Articles {
   @operationId("listArticles")
-  list is ArticleModule.API.listArticles;
+  @get
+  listArticles(): ArticleAPI.ArticleListResponse<Article>;
 
   @operationId("readArticle")
-  get is ArticleModule.API.resourceReadArticle;
+  @get
+  resourceReadArticle(@path id: integer): ArticleAPI.ArticleItemResponse<Article> | ErrorResponse<404, ArticleOperation.NotFoundArticle>;
 
   @operationId("createArticle")
-  create is ArticleModule.API.createArticle;
+  @post
+  createArticle(dto: ArticleOperation.CreateArticleDTO): ArticleAPI.ArticleItemResponse<Article>;
+
+  @operationId("updateArticle")
+  @put
+  editArticle(
+    @path id: integer,
+    @body dto: ArticleOperation.UpdateArticleDTO,
+  ): ArticleAPI.ArticleItemResponse<Article> | ErrorResponse<404, ArticleOperation.NotFoundArticle>;
 }

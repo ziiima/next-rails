@@ -17,11 +17,18 @@ scalar ArticleTitle extends string;
 scalar ArticleBody extends string;
 
 namespace ArticleOperation {
-
   model CreateArticleDTO {
     title: ArticleTitle;
     body: ArticleBody;
   }
 
+  model UpdateArticleDTO {
+    title: ArticleTitle;
+    body: ArticleBody;
+  }
+
+  model NotFoundArticle {}
+
   op createArticle(dto: CreateArticleDTO): Article;
+  op editArticle(dto: UpdateArticleDTO): Article;
 }

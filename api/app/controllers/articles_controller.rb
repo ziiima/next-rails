@@ -1,8 +1,8 @@
 class ArticlesController < ApplicationController
-  before_action :find_article, only: [:show]
+  before_action :find_article, only: [:show, :update]
   def index
     @articles = Article.all
-    render json: { items: @articles }, status: :ok
+    render json: ArticleListResponseSerializer.new(@articles), status: :ok
   end
 
   def show
@@ -11,7 +11,7 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new(create_article_params)
+    @article = Article.new(upsert_article_params)
     if @article.invalid?
       return render json: nil, status: :bad_request
     end
@@ -20,18 +20,37 @@ class ArticlesController < ApplicationController
     render json: ArticleResponseSerializer.new(@article)
   end
 
+  def update
+    unless @article.update(upsert_article_params)
+      return render json: nil, status: :bad_request
+    end
+    render json: ArticleResponseSerializer.new(@article)
+  end
+
   private
 
   def find_article
     @article = Article.find_by(id: params[:id])
     if @article.nil?
-      render json: nil, status: 404
+      render json: nil, status: :not_found
     end
   end
 
-  def create_article_params
+  def upsert_article_params
     params.require(:dto).permit(:title, :body)
   end
+end
+
+class ArticleListResponseSerializer
+  include ActiveModel::Serializers::JSON
+  attr_accessor :items
+
+  def initialize(articles)
+    @items = articles.map { |article| ArticleSerializer.new(article) }
+  end
+
+  private
+  def attribute_names_for_serialization = %i[items]
 end
 
 class ArticleResponseSerializer

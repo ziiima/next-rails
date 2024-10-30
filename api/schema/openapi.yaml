@@ -16,7 +16,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListArticles'
+                type: object
+                required:
+                  - items
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Article'
       tags:
         - article
     post:
@@ -28,7 +35,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArticleResponse'
+                type: object
+                required:
+                  - article
+                properties:
+                  article:
+                    $ref: '#/components/schemas/Article'
       tags:
         - article
       requestBody:
@@ -57,9 +69,54 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArticleResponse'
+                type: object
+                required:
+                  - article
+                properties:
+                  article:
+                    $ref: '#/components/schemas/Article'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
       tags:
         - article
+    put:
+      operationId: updateArticle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - article
+                properties:
+                  article:
+                    $ref: '#/components/schemas/Article'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
+      tags:
+        - article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleOperation.UpdateArticleDTO'
   /blogs:
     post:
       operationId: createBlog
@@ -147,13 +204,18 @@ components:
           $ref: '#/components/schemas/ArticleTitle'
         body:
           $ref: '#/components/schemas/ArticleBody'
-    ArticleResponse:
+    ArticleOperation.NotFoundArticle:
+      type: object
+    ArticleOperation.UpdateArticleDTO:
       type: object
       required:
-        - article
+        - title
+        - body
       properties:
-        article:
-          $ref: '#/components/schemas/Article'
+        title:
+          $ref: '#/components/schemas/ArticleTitle'
+        body:
+          $ref: '#/components/schemas/ArticleBody'
     ArticleTitle:
       type: string
       minLength: 1
@@ -174,15 +236,6 @@ components:
       properties:
         title:
           $ref: '#/components/schemas/blogTitle'
-    ListArticles:
-      type: object
-      required:
-        - items
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Article'
     blogTitle:
       type: string
       minLength: 1
