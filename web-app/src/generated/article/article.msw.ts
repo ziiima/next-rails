@@ -6,9 +6,9 @@
  */
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
-import type { ListArticles } from '.././model'
+import type { ArticleResponse, ListArticles } from '.././model'
 
-export const getArticlesListResponseMock = (
+export const getListArticlesResponseMock = (
   overrideResponse: Partial<ListArticles> = {},
 ): ListArticles => ({
   items: Array.from(
@@ -24,7 +24,20 @@ export const getArticlesListResponseMock = (
   ...overrideResponse,
 })
 
-export const getArticlesListMockHandler = (
+export const getReadArticleResponseMock = (
+  overrideResponse: Partial<ArticleResponse> = {},
+): ArticleResponse => ({
+  article: {
+    body: faker.word.sample(),
+    created_at: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    title: faker.word.sample(),
+    updated_at: faker.word.sample(),
+  },
+  ...overrideResponse,
+})
+
+export const getListArticlesMockHandler = (
   overrideResponse?:
     | ListArticles
     | ((
@@ -40,10 +53,36 @@ export const getArticlesListMockHandler = (
           ? typeof overrideResponse === 'function'
             ? await overrideResponse(info)
             : overrideResponse
-          : getArticlesListResponseMock(),
+          : getListArticlesResponseMock(),
       ),
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     )
   })
 }
-export const getArticleMock = () => [getArticlesListMockHandler()]
+
+export const getReadArticleMockHandler = (
+  overrideResponse?:
+    | ArticleResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<ArticleResponse> | ArticleResponse),
+) => {
+  return http.get('*/articles/:id', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getReadArticleResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
+export const getArticleMock = () => [
+  getListArticlesMockHandler(),
+  getReadArticleMockHandler(),
+]

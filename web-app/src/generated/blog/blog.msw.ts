@@ -6,18 +6,18 @@
  */
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
-import type { Blog, BlogsList200 } from '.././model'
+import type { Blog, ResourceReadBlogs200 } from '.././model'
 
-export const getBlogsCreateResponseMock = (
+export const getCreateBlogResponseMock = (
   overrideResponse: Partial<Blog> = {},
 ): Blog => ({
   id: faker.number.int({ min: undefined, max: undefined }),
   ...overrideResponse,
 })
 
-export const getBlogsListResponseMock = (
-  overrideResponse: Partial<BlogsList200> = {},
-): BlogsList200 => ({
+export const getResourceReadBlogsResponseMock = (
+  overrideResponse: Partial<ResourceReadBlogs200> = {},
+): ResourceReadBlogs200 => ({
   currentPage: faker.number.int({ min: undefined, max: undefined }),
   items: Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
@@ -28,7 +28,7 @@ export const getBlogsListResponseMock = (
   ...overrideResponse,
 })
 
-export const getBlogsCreateMockHandler = (
+export const getCreateBlogMockHandler = (
   overrideResponse?:
     | Blog
     | ((
@@ -44,19 +44,19 @@ export const getBlogsCreateMockHandler = (
           ? typeof overrideResponse === 'function'
             ? await overrideResponse(info)
             : overrideResponse
-          : getBlogsCreateResponseMock(),
+          : getCreateBlogResponseMock(),
       ),
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     )
   })
 }
 
-export const getBlogsListMockHandler = (
+export const getResourceReadBlogsMockHandler = (
   overrideResponse?:
-    | BlogsList200
+    | ResourceReadBlogs200
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<BlogsList200> | BlogsList200),
+      ) => Promise<ResourceReadBlogs200> | ResourceReadBlogs200),
 ) => {
   return http.get('*/blogs', async (info) => {
     await delay(1000)
@@ -67,13 +67,13 @@ export const getBlogsListMockHandler = (
           ? typeof overrideResponse === 'function'
             ? await overrideResponse(info)
             : overrideResponse
-          : getBlogsListResponseMock(),
+          : getResourceReadBlogsResponseMock(),
       ),
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     )
   })
 }
 export const getBlogMock = () => [
-  getBlogsCreateMockHandler(),
-  getBlogsListMockHandler(),
+  getCreateBlogMockHandler(),
+  getResourceReadBlogsMockHandler(),
 ]

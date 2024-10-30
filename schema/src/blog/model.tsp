@@ -16,4 +16,6 @@ model CreateBlogContent {
   ...Blog;
 }
 
-op createBlogCotnent(dto: CreateBlogContent): Blog;
+namespace BlogModule {
+  op createBlogCotnent(dto: CreateBlogContent): Blog;
+}

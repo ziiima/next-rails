@@ -10,9 +10,3 @@ model Article {
   created_at: string;
   updated_at: string;
 }
-
-model ListArticles {
-  items: Article[];
-}
-
-op listArticles(): ListArticles;

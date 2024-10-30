@@ -8,7 +8,7 @@ import {
   z as zod
 } from 'zod'
 
-export const articlesListResponse = zod.object({
+export const listArticlesResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.number(),
   "title": zod.string(),
@@ -16,5 +16,19 @@ export const articlesListResponse = zod.object({
   "created_at": zod.string(),
   "updated_at": zod.string()
 }))
+})
+
+export const readArticleParams = zod.object({
+  "id": zod.number()
+})
+
+export const readArticleResponse = zod.object({
+  "article": zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "body": zod.string(),
+  "created_at": zod.string(),
+  "updated_at": zod.string()
+})
 })
 

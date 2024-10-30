@@ -6,120 +6,192 @@
  */
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
-import type { Blog, BlogsCreateBody, BlogsList200 } from '.././model'
+import type { Blog, CreateBlogBody, ResourceReadBlogs200 } from '.././model'
 import { restclient } from '../../utils/rest-client'
 
-export const blogsCreate = (blogsCreateBody: BlogsCreateBody) => {
+export const createBlog = (createBlogBody: CreateBlogBody) => {
   return restclient<Blog>({
     url: `/blogs`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    data: blogsCreateBody,
+    data: createBlogBody,
   })
 }
 
-export const getBlogsCreateMutationOptions = <
+export const getCreateBlogMutationOptions = <
   TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof blogsCreate>>,
+    Awaited<ReturnType<typeof createBlog>>,
     TError,
-    { data: BlogsCreateBody },
+    { data: CreateBlogBody },
     TContext
   >
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof blogsCreate>>,
+  Awaited<ReturnType<typeof createBlog>>,
   TError,
-  { data: BlogsCreateBody },
+  { data: CreateBlogBody },
   TContext
 > => {
   const { mutation: mutationOptions } = options ?? {}
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof blogsCreate>>,
-    { data: BlogsCreateBody }
+    Awaited<ReturnType<typeof createBlog>>,
+    { data: CreateBlogBody }
   > = (props) => {
     const { data } = props ?? {}
 
-    return blogsCreate(data)
+    return createBlog(data)
   }
 
   return { mutationFn, ...mutationOptions }
 }
 
-export type BlogsCreateMutationResult = NonNullable<
-  Awaited<ReturnType<typeof blogsCreate>>
+export type CreateBlogMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createBlog>>
 >
-export type BlogsCreateMutationBody = BlogsCreateBody
-export type BlogsCreateMutationError = unknown
+export type CreateBlogMutationBody = CreateBlogBody
+export type CreateBlogMutationError = unknown
 
-export const useBlogsCreate = <TError = unknown, TContext = unknown>(options?: {
+export const useCreateBlog = <TError = unknown, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof blogsCreate>>,
+    Awaited<ReturnType<typeof createBlog>>,
     TError,
-    { data: BlogsCreateBody },
+    { data: CreateBlogBody },
     TContext
   >
 }): UseMutationResult<
-  Awaited<ReturnType<typeof blogsCreate>>,
+  Awaited<ReturnType<typeof createBlog>>,
   TError,
-  { data: BlogsCreateBody },
+  { data: CreateBlogBody },
   TContext
 > => {
-  const mutationOptions = getBlogsCreateMutationOptions(options)
+  const mutationOptions = getCreateBlogMutationOptions(options)
 
   return useMutation(mutationOptions)
 }
-export const blogsList = (signal?: AbortSignal) => {
-  return restclient<BlogsList200>({ url: `/blogs`, method: 'GET', signal })
+export const resourceReadBlogs = (signal?: AbortSignal) => {
+  return restclient<ResourceReadBlogs200>({
+    url: `/blogs`,
+    method: 'GET',
+    signal,
+  })
 }
 
-export const getBlogsListQueryKey = () => {
+export const getResourceReadBlogsQueryKey = () => {
   return [`/blogs`] as const
 }
 
-export const getBlogsListQueryOptions = <
-  TData = Awaited<ReturnType<typeof blogsList>>,
+export const getResourceReadBlogsQueryOptions = <
+  TData = Awaited<ReturnType<typeof resourceReadBlogs>>,
   TError = unknown,
 >(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof blogsList>>, TError, TData>
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof resourceReadBlogs>>,
+      TError,
+      TData
+    >
+  >
 }) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getBlogsListQueryKey()
+  const queryKey = queryOptions?.queryKey ?? getResourceReadBlogsQueryKey()
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof blogsList>>> = ({
-    signal,
-  }) => blogsList(signal)
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof resourceReadBlogs>>
+  > = ({ signal }) => resourceReadBlogs(signal)
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof blogsList>>,
+    Awaited<ReturnType<typeof resourceReadBlogs>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type BlogsListQueryResult = NonNullable<
-  Awaited<ReturnType<typeof blogsList>>
+export type ResourceReadBlogsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof resourceReadBlogs>>
 >
-export type BlogsListQueryError = unknown
+export type ResourceReadBlogsQueryError = unknown
 
-export function useBlogsList<
-  TData = Awaited<ReturnType<typeof blogsList>>,
+export function useResourceReadBlogs<
+  TData = Awaited<ReturnType<typeof resourceReadBlogs>>,
+  TError = unknown,
+>(options: {
+  query: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof resourceReadBlogs>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof resourceReadBlogs>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >
+}): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useResourceReadBlogs<
+  TData = Awaited<ReturnType<typeof resourceReadBlogs>>,
   TError = unknown,
 >(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof blogsList>>, TError, TData>
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof resourceReadBlogs>>,
+      TError,
+      TData
+    >
+  > &
+    Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof resourceReadBlogs>>,
+        TError,
+        TData
+      >,
+      'initialData'
+    >
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useResourceReadBlogs<
+  TData = Awaited<ReturnType<typeof resourceReadBlogs>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof resourceReadBlogs>>,
+      TError,
+      TData
+    >
+  >
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey }
+
+export function useResourceReadBlogs<
+  TData = Awaited<ReturnType<typeof resourceReadBlogs>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof resourceReadBlogs>>,
+      TError,
+      TData
+    >
+  >
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getBlogsListQueryOptions(options)
+  const queryOptions = getResourceReadBlogsQueryOptions(options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey

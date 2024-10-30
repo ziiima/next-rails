@@ -8,20 +8,20 @@ import {
   z as zod
 } from 'zod'
 
-export const blogsCreateBodyDtoTitleMax = 255;
+export const createBlogBodyDtoTitleMax = 255;
 
 
-export const blogsCreateBody = zod.object({
+export const createBlogBody = zod.object({
   "dto": zod.object({
-  "title": zod.string().min(1).max(blogsCreateBodyDtoTitleMax)
+  "title": zod.string().min(1).max(createBlogBodyDtoTitleMax)
 })
 })
 
-export const blogsCreateResponse = zod.object({
+export const createBlogResponse = zod.object({
   "id": zod.number()
 })
 
-export const blogsListResponse = zod.object({
+export const resourceReadBlogsResponse = zod.object({
   "currentPage": zod.number(),
   "perPage": zod.number(),
   "totalCount": zod.number(),

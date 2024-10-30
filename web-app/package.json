@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "gen:openapi": "orval --config ./orval.config.ts",
+    "gen:api": "orval --config ./orval.config.ts",
     "gen:page": "scaffdog generate",
     "cli:scaffdog": "scaffdog"
   },

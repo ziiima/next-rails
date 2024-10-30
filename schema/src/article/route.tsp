@@ -4,12 +4,31 @@
  * created at 2024/10/29
  **/
 import "@typespec/http";
+import "@typespec/openapi";
 import "./model.tsp";
 
 using TypeSpec.Http;
+using TypeSpec.OpenAPI;
+
+model ListArticles {
+  items: Article[];
+}
+
+model ArticleResponse {
+  article: Article;
+}
+
+namespace ArticleModule.API {
+  op listArticles(): ListArticles;
+  op resourceReadArticle(@path id: integer): ArticleResponse;
+}
 
 @tag("article")
 @route("/articles")
 interface Articles {
-  list is listArticles;
+  @operationId("listArticles")
+  list is ArticleModule.API.listArticles;
+
+  @operationId("readArticle")
+  get is ArticleModule.API.resourceReadArticle;
 }

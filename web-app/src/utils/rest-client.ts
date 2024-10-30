@@ -1,4 +1,5 @@
-const baseURL = 'http://localhost:3000' // use your own URL here or environment variable
+const clientBaseURL = 'http://127.0.0.1:3000' // use your own URL here or environment variable
+const apiBaseURL = 'http://host.docker.internal:3000'
 
 export const restclient = async <T>({
   url,
@@ -15,6 +16,7 @@ export const restclient = async <T>({
   headers?: HeadersInit
   signal?: AbortSignal
 }): Promise<T> => {
+  const baseURL = typeof window === 'undefined' ? apiBaseURL : clientBaseURL
   let targetUrl = `${baseURL}${url}`
 
   if (params) {
