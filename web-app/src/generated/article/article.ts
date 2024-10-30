@@ -18,7 +18,6 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import type {
-  Article,
   ArticleResponse,
   CreateArticleBody,
   ListArticles,
@@ -122,7 +121,7 @@ export function useListArticles<
 }
 
 export const createArticle = (createArticleBody: CreateArticleBody) => {
-  return restclient<Article>({
+  return restclient<ArticleResponse>({
     url: `/articles`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

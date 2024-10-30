@@ -6,7 +6,7 @@
  */
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
-import type { Article, ArticleResponse, ListArticles } from '.././model'
+import type { ArticleResponse, ListArticles } from '.././model'
 
 export const getListArticlesResponseMock = (
   overrideResponse: Partial<ListArticles> = {},
@@ -23,11 +23,13 @@ export const getListArticlesResponseMock = (
 })
 
 export const getCreateArticleResponseMock = (
-  overrideResponse: Partial<Article> = {},
-): Article => ({
-  body: faker.word.sample(),
-  id: faker.number.int({ min: undefined, max: undefined }),
-  title: faker.word.sample(),
+  overrideResponse: Partial<ArticleResponse> = {},
+): ArticleResponse => ({
+  article: {
+    body: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    title: faker.word.sample(),
+  },
   ...overrideResponse,
 })
 
@@ -67,10 +69,10 @@ export const getListArticlesMockHandler = (
 
 export const getCreateArticleMockHandler = (
   overrideResponse?:
-    | Article
+    | ArticleResponse
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<Article> | Article),
+      ) => Promise<ArticleResponse> | ArticleResponse),
 ) => {
   return http.post('*/articles', async (info) => {
     await delay(1000)

@@ -12,6 +12,9 @@ export const ArticleList: FC = () => {
             <Link href={`/articles/${item.id}`}>{item.title}</Link>
           </li>
         ))}
+        <li>
+          <Link href={`/articles/new`}>新規作成</Link>
+        </li>
       </ul>
     </div>
   )

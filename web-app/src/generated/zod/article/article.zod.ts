@@ -31,14 +31,16 @@ export const createArticleBody = zod.object({
 })
 })
 
-export const createArticleResponseTitleMax = 255;
-export const createArticleResponseBodyMin = 10;
+export const createArticleResponseArticleTitleMax = 255;
+export const createArticleResponseArticleBodyMin = 10;
 
 
 export const createArticleResponse = zod.object({
+  "article": zod.object({
   "id": zod.number(),
-  "title": zod.string().min(1).max(createArticleResponseTitleMax),
-  "body": zod.string().min(createArticleResponseBodyMin)
+  "title": zod.string().min(1).max(createArticleResponseArticleTitleMax),
+  "body": zod.string().min(createArticleResponseArticleBodyMin)
+})
 })
 
 export const readArticleParams = zod.object({
