@@ -6,7 +6,7 @@
  */
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
-import type { ArticleResponse, ListArticles } from '.././model'
+import type { Article, ArticleResponse, ListArticles } from '.././model'
 
 export const getListArticlesResponseMock = (
   overrideResponse: Partial<ListArticles> = {},
@@ -16,11 +16,18 @@ export const getListArticlesResponseMock = (
     (_, i) => i + 1,
   ).map(() => ({
     body: faker.word.sample(),
-    created_at: faker.word.sample(),
     id: faker.number.int({ min: undefined, max: undefined }),
     title: faker.word.sample(),
-    updated_at: faker.word.sample(),
   })),
+  ...overrideResponse,
+})
+
+export const getCreateArticleResponseMock = (
+  overrideResponse: Partial<Article> = {},
+): Article => ({
+  body: faker.word.sample(),
+  id: faker.number.int({ min: undefined, max: undefined }),
+  title: faker.word.sample(),
   ...overrideResponse,
 })
 
@@ -29,10 +36,8 @@ export const getReadArticleResponseMock = (
 ): ArticleResponse => ({
   article: {
     body: faker.word.sample(),
-    created_at: faker.word.sample(),
     id: faker.number.int({ min: undefined, max: undefined }),
     title: faker.word.sample(),
-    updated_at: faker.word.sample(),
   },
   ...overrideResponse,
 })
@@ -54,6 +59,29 @@ export const getListArticlesMockHandler = (
             ? await overrideResponse(info)
             : overrideResponse
           : getListArticlesResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
+
+export const getCreateArticleMockHandler = (
+  overrideResponse?:
+    | Article
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<Article> | Article),
+) => {
+  return http.post('*/articles', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getCreateArticleResponseMock(),
       ),
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     )
@@ -84,5 +112,6 @@ export const getReadArticleMockHandler = (
 }
 export const getArticleMock = () => [
   getListArticlesMockHandler(),
+  getCreateArticleMockHandler(),
   getReadArticleMockHandler(),
 ]

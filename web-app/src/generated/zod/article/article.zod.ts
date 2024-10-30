@@ -8,27 +8,52 @@ import {
   z as zod
 } from 'zod'
 
+export const listArticlesResponseItemsItemTitleMax = 255;
+export const listArticlesResponseItemsItemBodyMin = 10;
+
+
 export const listArticlesResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.number(),
-  "title": zod.string(),
-  "body": zod.string(),
-  "created_at": zod.string(),
-  "updated_at": zod.string()
+  "title": zod.string().min(1).max(listArticlesResponseItemsItemTitleMax),
+  "body": zod.string().min(listArticlesResponseItemsItemBodyMin)
 }))
+})
+
+export const createArticleBodyDtoTitleMax = 255;
+export const createArticleBodyDtoBodyMin = 10;
+
+
+export const createArticleBody = zod.object({
+  "dto": zod.object({
+  "title": zod.string().min(1).max(createArticleBodyDtoTitleMax),
+  "body": zod.string().min(createArticleBodyDtoBodyMin)
+})
+})
+
+export const createArticleResponseTitleMax = 255;
+export const createArticleResponseBodyMin = 10;
+
+
+export const createArticleResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string().min(1).max(createArticleResponseTitleMax),
+  "body": zod.string().min(createArticleResponseBodyMin)
 })
 
 export const readArticleParams = zod.object({
   "id": zod.number()
 })
 
+export const readArticleResponseArticleTitleMax = 255;
+export const readArticleResponseArticleBodyMin = 10;
+
+
 export const readArticleResponse = zod.object({
   "article": zod.object({
   "id": zod.number(),
-  "title": zod.string(),
-  "body": zod.string(),
-  "created_at": zod.string(),
-  "updated_at": zod.string()
+  "title": zod.string().min(1).max(readArticleResponseArticleTitleMax),
+  "body": zod.string().min(readArticleResponseArticleBodyMin)
 })
 })
 

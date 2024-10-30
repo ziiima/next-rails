@@ -5,8 +5,22 @@
  **/
 model Article {
   @key id: integer;
-  title: string;
-  body: string;
-  created_at: string;
-  updated_at: string;
+  title: ArticleTitle;
+  body: ArticleBody;
+}
+
+@minLength(1)
+@maxLength(255)
+scalar ArticleTitle extends string;
+
+@minLength(10)
+scalar ArticleBody extends string;
+
+namespace ArticleOperation {
+  model CreateArticleDTO {
+    title: ArticleTitle;
+    body: ArticleBody;
+  }
+
+  op createArticle(dto: CreateArticleDTO): Article;
 }

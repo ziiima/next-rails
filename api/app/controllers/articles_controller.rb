@@ -10,6 +10,16 @@ class ArticlesController < ApplicationController
     render json: article
   end
 
+  def create
+    @article = Article.new(create_article_params)
+    if @article.invalid?
+      return render json: nil, status: :bad_request
+    end
+    @article.save
+
+    render json: ArticleResponseSerializer.new(@article)
+  end
+
   private
 
   def find_article
@@ -17,6 +27,10 @@ class ArticlesController < ApplicationController
     if @article.nil?
       render json: nil, status: 404
     end
+  end
+
+  def create_article_params
+    params.require(:dto).permit(:title, :body)
   end
 end
 

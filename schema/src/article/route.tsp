@@ -9,6 +9,7 @@ import "./model.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
+using ArticleModule;
 
 model ListArticles {
   items: Article[];
@@ -21,6 +22,7 @@ model ArticleResponse {
 namespace ArticleModule.API {
   op listArticles(): ListArticles;
   op resourceReadArticle(@path id: integer): ArticleResponse;
+  op createArticle(dto: ArticleOperation.CreateArticleDTO): ArticleResponse;
 }
 
 @tag("article")
@@ -31,4 +33,7 @@ interface Articles {
 
   @operationId("readArticle")
   get is ArticleModule.API.resourceReadArticle;
+
+  @operationId("createArticle")
+  create is ArticleModule.API.createArticle;
 }

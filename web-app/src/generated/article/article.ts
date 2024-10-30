@@ -4,17 +4,25 @@
  * (title)
  * OpenAPI spec version: 0.0.0
  */
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
-import type { ArticleResponse, ListArticles } from '.././model'
+import type {
+  Article,
+  ArticleResponse,
+  CreateArticleBody,
+  ListArticles,
+} from '.././model'
 import { restclient } from '../../utils/rest-client'
 
 export const listArticles = (signal?: AbortSignal) => {
@@ -113,6 +121,71 @@ export function useListArticles<
   return query
 }
 
+export const createArticle = (createArticleBody: CreateArticleBody) => {
+  return restclient<Article>({
+    url: `/articles`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: createArticleBody,
+  })
+}
+
+export const getCreateArticleMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createArticle>>,
+    TError,
+    { data: CreateArticleBody },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createArticle>>,
+  TError,
+  { data: CreateArticleBody },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createArticle>>,
+    { data: CreateArticleBody }
+  > = (props) => {
+    const { data } = props ?? {}
+
+    return createArticle(data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateArticleMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createArticle>>
+>
+export type CreateArticleMutationBody = CreateArticleBody
+export type CreateArticleMutationError = unknown
+
+export const useCreateArticle = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createArticle>>,
+    TError,
+    { data: CreateArticleBody },
+    TContext
+  >
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createArticle>>,
+  TError,
+  { data: CreateArticleBody },
+  TContext
+> => {
+  const mutationOptions = getCreateArticleMutationOptions(options)
+
+  return useMutation(mutationOptions)
+}
 export const readArticle = (id: number, signal?: AbortSignal) => {
   return restclient<ArticleResponse>({
     url: `/articles/${id}`,
