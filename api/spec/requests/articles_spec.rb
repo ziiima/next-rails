@@ -38,4 +38,15 @@ RSpec.describe "Articles", type: :request do
       assert_response_schema_confirm(200)
     end
   end
+
+  describe "DELETE /articles/:id" do
+    include Committee::Rails::Test::Methods
+    let(:article) { Article.create!(title: "title", body: "bodybodybody") }
+
+    it "ok" do
+      delete "/articles/#{article.id}"
+      assert_response_schema_confirm(200)
+      expect(Article.find_by(id: article.id)).to be_nil
+    end
+  end
 end

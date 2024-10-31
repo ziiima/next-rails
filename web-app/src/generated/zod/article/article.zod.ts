@@ -59,3 +59,38 @@ export const readArticleResponse = zod.object({
 })
 })
 
+export const updateArticleParams = zod.object({
+  "id": zod.number()
+})
+
+export const updateArticleBodyDtoTitleMax = 255;
+export const updateArticleBodyDtoBodyMin = 10;
+
+
+export const updateArticleBody = zod.object({
+  "dto": zod.object({
+  "title": zod.string().min(1).max(updateArticleBodyDtoTitleMax),
+  "body": zod.string().min(updateArticleBodyDtoBodyMin)
+})
+})
+
+export const updateArticleResponseArticleTitleMax = 255;
+export const updateArticleResponseArticleBodyMin = 10;
+
+
+export const updateArticleResponse = zod.object({
+  "article": zod.object({
+  "id": zod.number(),
+  "title": zod.string().min(1).max(updateArticleResponseArticleTitleMax),
+  "body": zod.string().min(updateArticleResponseArticleBodyMin)
+})
+})
+
+export const deleteArticleParams = zod.object({
+  "id": zod.number()
+})
+
+export const deleteArticleResponse = zod.object({
+  "id": zod.number()
+})
+

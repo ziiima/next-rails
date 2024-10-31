@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :find_article, only: [:show, :update]
+  before_action :find_article, only: [:show, :update, :destroy]
   def index
     @articles = Article.all
     render json: ArticleListResponseSerializer.new(@articles), status: :ok
@@ -15,7 +15,10 @@ class ArticlesController < ApplicationController
     if @article.invalid?
       return render json: nil, status: :bad_request
     end
-    @article.save
+
+    unless @article.save
+      return render json: nil, status: :bad_request
+    end
 
     render json: ArticleResponseSerializer.new(@article)
   end
@@ -25,6 +28,15 @@ class ArticlesController < ApplicationController
       return render json: nil, status: :bad_request
     end
     render json: ArticleResponseSerializer.new(@article)
+  end
+
+  def destroy
+    @article.destroy
+    unless @article.destroyed?
+      render json: nil, status: :interinternal_server_error 
+      return
+    end
+    render json: ArticleDeleteResponseSerializer.new(@article)
   end
 
   private
@@ -39,43 +51,4 @@ class ArticlesController < ApplicationController
   def upsert_article_params
     params.require(:dto).permit(:title, :body)
   end
-end
-
-class ArticleListResponseSerializer
-  include ActiveModel::Serializers::JSON
-  attr_accessor :items
-
-  def initialize(articles)
-    @items = articles.map { |article| ArticleSerializer.new(article) }
-  end
-
-  private
-  def attribute_names_for_serialization = %i[items]
-end
-
-class ArticleResponseSerializer
-  include ActiveModel::Serializers::JSON
-  
-  attr_accessor :article
-
-  def initialize(article)
-    @article = ArticleSerializer.new(article)
-  end
-
-  private
-
-  def attribute_names_for_serialization = %i[article]
-end
-
-class ArticleSerializer
-  include ActiveModel::Serializers::JSON
-  delegate :id, :title, :body, to: :@article
-
-  def initialize(article)
-    @article = article
-  end
-
-  private
-
-  def attribute_names_for_serialization = %i[id title body]
 end

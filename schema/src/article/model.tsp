@@ -4,7 +4,7 @@
  * created at 2024/10/29
  **/
 model Article {
-  @key id: integer;
+  @key id: ArticleId;
   title: ArticleTitle;
   body: ArticleBody;
 }
@@ -15,6 +15,8 @@ scalar ArticleTitle extends string;
 
 @minLength(10)
 scalar ArticleBody extends string;
+
+scalar ArticleId extends integer;
 
 namespace ArticleOperation {
   model CreateArticleDTO {
@@ -29,6 +31,9 @@ namespace ArticleOperation {
 
   model NotFoundArticle {}
 
+  model ParameterInavlid {}
+
   op createArticle(dto: CreateArticleDTO): Article;
   op editArticle(dto: UpdateArticleDTO): Article;
+  op deleteArticle(id: ArticleId): ArticleId;
 }

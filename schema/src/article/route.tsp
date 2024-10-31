@@ -12,28 +12,16 @@ using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 
 namespace ArticleAPI {
-  model ListItems<Model> {
-    items: Model[]
+  model ArticleListResponse {
+    items: Article[];
   }
 
-  model ArticleListResponse<Model> {
-    @statusCode
-    status: 200;
-
-    @body
-    items: ListItems<Model>;
+  model ArticleResponse {
+    article: Article;
   }
 
-  model Item<Model> {
-    article: Model
-  }
-
-  model ArticleItemResponse<Model, Status = 200> {
-    @statusCode
-    statusCode: Status;
-
-    @body
-    article: Item<Model>
+  model ArticleDeleteResponse {
+    id: ArticleId;
   }
 }
 
@@ -42,20 +30,42 @@ namespace ArticleAPI {
 interface Articles {
   @operationId("listArticles")
   @get
-  listArticles(): ArticleAPI.ArticleListResponse<Article>;
+  listArticles(): ArticleAPI.ArticleListResponse;
 
   @operationId("readArticle")
   @get
-  resourceReadArticle(@path id: integer): ArticleAPI.ArticleItemResponse<Article> | ErrorResponse<404, ArticleOperation.NotFoundArticle>;
+  resourceReadArticle(
+    @path id: integer,
+  ): ArticleAPI.ArticleResponse | ErrorResponse<
+    404,
+    ArticleOperation.NotFoundArticle
+  >;
 
   @operationId("createArticle")
   @post
-  createArticle(dto: ArticleOperation.CreateArticleDTO): ArticleAPI.ArticleItemResponse<Article>;
+  createArticle(
+    dto: ArticleOperation.CreateArticleDTO,
+  ): ArticleAPI.ArticleResponse | ErrorResponse<
+    400,
+    ArticleOperation.ParameterInavlid
+  >;
 
   @operationId("updateArticle")
   @put
   editArticle(
     @path id: integer,
-    @body dto: ArticleOperation.UpdateArticleDTO,
-  ): ArticleAPI.ArticleItemResponse<Article> | ErrorResponse<404, ArticleOperation.NotFoundArticle>;
+    dto: ArticleOperation.UpdateArticleDTO,
+  ): ArticleAPI.ArticleResponse | ErrorResponse<
+    404,
+    ArticleOperation.NotFoundArticle
+  > | ErrorResponse<400, ArticleOperation.ParameterInavlid>;
+
+  @operationId("deleteArticle")
+  @delete
+  deleteArticle(
+    @path id: integer,
+  ): ArticleAPI.ArticleDeleteResponse | ErrorResponse<
+    404,
+    ArticleOperation.NotFoundArticle
+  >;
 }
