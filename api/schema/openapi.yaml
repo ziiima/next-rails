@@ -5,6 +5,8 @@ info:
 tags:
   - name: blog
   - name: article
+  - name: articles
+  - name: comment
 paths:
   /articles:
     get:
@@ -52,11 +54,7 @@ paths:
     get:
       operationId: readArticle
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/ArticleAPI.ArticleDetailParameter'
       responses:
         '200':
           description: The request has succeeded.
@@ -71,15 +69,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
       tags:
-        - article
+        - articles
     put:
       operationId: updateArticle
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/ArticleAPI.ArticleDetailParameter'
       responses:
         '200':
           description: The request has succeeded.
@@ -100,7 +94,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
       tags:
-        - article
+        - articles
       requestBody:
         required: true
         content:
@@ -115,11 +109,7 @@ paths:
     delete:
       operationId: deleteArticle
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/ArticleAPI.ArticleDetailParameter'
       responses:
         '200':
           description: The request has succeeded.
@@ -134,6 +124,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
       tags:
+        - articles
+  /articles/{id}/comments:
+    get:
+      operationId: getArticleComments
+      parameters:
+        - $ref: '#/components/parameters/ArticleAPI.ArticleDetailParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleCommentAPI.ArticleCommentListResponse'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
+      tags:
+        - comment
         - article
   /blogs:
     post:
@@ -191,6 +202,13 @@ paths:
       tags:
         - blog
 components:
+  parameters:
+    ArticleAPI.ArticleDetailParameter:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
   schemas:
     Article:
       type: object
@@ -235,6 +253,15 @@ components:
     ArticleBody:
       type: string
       minLength: 10
+    ArticleCommentAPI.ArticleCommentListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
     ArticleId:
       type: integer
     ArticleOperation.CreateArticleDTO:
@@ -274,6 +301,28 @@ components:
           type: integer
           format: uint64
           readOnly: true
+    Comment:
+      type: object
+      required:
+        - id
+        - commenter
+        - body
+      properties:
+        id:
+          $ref: '#/components/schemas/CommentId'
+        commenter:
+          $ref: '#/components/schemas/Commenter'
+        body:
+          $ref: '#/components/schemas/CommentBody'
+    CommentBody:
+      type: string
+      minLength: 1
+    CommentId:
+      type: string
+    Commenter:
+      type: string
+      minLength: 1
+      maxLength: 255
     CreateBlogContent:
       type: object
       required:

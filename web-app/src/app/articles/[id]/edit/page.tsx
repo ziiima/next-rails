@@ -1,4 +1,4 @@
-import { readArticle } from '@/generated/article/article'
+import { readArticle } from '@/generated/articles/articles'
 import { ArticleEditForm } from '../../components/article-edit-form'
 
 const ArticleEditPage = async ({

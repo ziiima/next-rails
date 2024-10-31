@@ -1,4 +1,4 @@
-import { readArticle } from '@/generated/article/article'
+import { readArticle } from '@/generated/articles/articles'
 import { ArticleDetail } from '../components/article-detail'
 
 const ArticlePage = async ({ params }: { params: Promise<{ id: number }> }) => {

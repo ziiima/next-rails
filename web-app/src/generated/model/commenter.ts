@@ -4,8 +4,9 @@
  * (title)
  * OpenAPI spec version: 0.0.0
  */
-import type { Article } from './article'
 
-export interface ListArticles {
-  items: Article[]
-}
+/**
+ * @minLength 1
+ * @maxLength 255
+ */
+export type Commenter = string

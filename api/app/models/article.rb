@@ -1,4 +1,5 @@
 class Article < ApplicationRecord
+    has_many :comments, -> { order(created_at: :desc) }
     attribute :title, :string
     attribute :body, :text
 

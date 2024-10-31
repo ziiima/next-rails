@@ -18,13 +18,12 @@ import type {
   UseQueryResult,
 } from '@tanstack/react-query'
 import type {
-  ArticleAPIArticleDeleteResponse,
   ArticleAPIArticleListResponse,
   ArticleAPIArticleResponse,
+  ArticleCommentAPIArticleCommentListResponse,
   ArticleOperationNotFoundArticle,
   ArticleOperationParameterInavlid,
   CreateArticleBody,
-  UpdateArticleBody,
 } from '.././model'
 import { restclient } from '../../utils/rest-client'
 
@@ -193,36 +192,40 @@ export const useCreateArticle = <
 
   return useMutation(mutationOptions)
 }
-export const readArticle = (id: number, signal?: AbortSignal) => {
-  return restclient<ArticleAPIArticleResponse>({
-    url: `/articles/${id}`,
+export const getArticleComments = (id: number, signal?: AbortSignal) => {
+  return restclient<ArticleCommentAPIArticleCommentListResponse>({
+    url: `/articles/${id}/comments`,
     method: 'GET',
     signal,
   })
 }
 
-export const getReadArticleQueryKey = (id: number) => {
-  return [`/articles/${id}`] as const
+export const getGetArticleCommentsQueryKey = (id: number) => {
+  return [`/articles/${id}/comments`] as const
 }
 
-export const getReadArticleQueryOptions = <
-  TData = Awaited<ReturnType<typeof readArticle>>,
+export const getGetArticleCommentsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getArticleComments>>,
   TError = ArticleOperationNotFoundArticle,
 >(
   id: number,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof readArticle>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleComments>>,
+        TError,
+        TData
+      >
     >
   },
 ) => {
   const { query: queryOptions } = options ?? {}
 
-  const queryKey = queryOptions?.queryKey ?? getReadArticleQueryKey(id)
+  const queryKey = queryOptions?.queryKey ?? getGetArticleCommentsQueryKey(id)
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof readArticle>>> = ({
-    signal,
-  }) => readArticle(id, signal)
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getArticleComments>>
+  > = ({ signal }) => getArticleComments(id, signal)
 
   return {
     queryKey,
@@ -230,29 +233,33 @@ export const getReadArticleQueryOptions = <
     enabled: !!id,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof readArticle>>,
+    Awaited<ReturnType<typeof getArticleComments>>,
     TError,
     TData
   > & { queryKey: QueryKey }
 }
 
-export type ReadArticleQueryResult = NonNullable<
-  Awaited<ReturnType<typeof readArticle>>
+export type GetArticleCommentsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getArticleComments>>
 >
-export type ReadArticleQueryError = ArticleOperationNotFoundArticle
+export type GetArticleCommentsQueryError = ArticleOperationNotFoundArticle
 
-export function useReadArticle<
-  TData = Awaited<ReturnType<typeof readArticle>>,
+export function useGetArticleComments<
+  TData = Awaited<ReturnType<typeof getArticleComments>>,
   TError = ArticleOperationNotFoundArticle,
 >(
   id: number,
   options: {
     query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof readArticle>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleComments>>,
+        TError,
+        TData
+      >
     > &
       Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof readArticle>>,
+          Awaited<ReturnType<typeof getArticleComments>>,
           TError,
           TData
         >,
@@ -260,18 +267,22 @@ export function useReadArticle<
       >
   },
 ): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useReadArticle<
-  TData = Awaited<ReturnType<typeof readArticle>>,
+export function useGetArticleComments<
+  TData = Awaited<ReturnType<typeof getArticleComments>>,
   TError = ArticleOperationNotFoundArticle,
 >(
   id: number,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof readArticle>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleComments>>,
+        TError,
+        TData
+      >
     > &
       Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof readArticle>>,
+          Awaited<ReturnType<typeof getArticleComments>>,
           TError,
           TData
         >,
@@ -279,30 +290,38 @@ export function useReadArticle<
       >
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey }
-export function useReadArticle<
-  TData = Awaited<ReturnType<typeof readArticle>>,
+export function useGetArticleComments<
+  TData = Awaited<ReturnType<typeof getArticleComments>>,
   TError = ArticleOperationNotFoundArticle,
 >(
   id: number,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof readArticle>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleComments>>,
+        TError,
+        TData
+      >
     >
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey }
 
-export function useReadArticle<
-  TData = Awaited<ReturnType<typeof readArticle>>,
+export function useGetArticleComments<
+  TData = Awaited<ReturnType<typeof getArticleComments>>,
   TError = ArticleOperationNotFoundArticle,
 >(
   id: number,
   options?: {
     query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof readArticle>>, TError, TData>
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleComments>>,
+        TError,
+        TData
+      >
     >
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getReadArticleQueryOptions(id, options)
+  const queryOptions = getGetArticleCommentsQueryOptions(id, options)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey
@@ -311,138 +330,4 @@ export function useReadArticle<
   query.queryKey = queryOptions.queryKey
 
   return query
-}
-
-export const updateArticle = (
-  id: number,
-  updateArticleBody: UpdateArticleBody,
-) => {
-  return restclient<ArticleAPIArticleResponse>({
-    url: `/articles/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: updateArticleBody,
-  })
-}
-
-export const getUpdateArticleMutationOptions = <
-  TError = ArticleOperationParameterInavlid | ArticleOperationNotFoundArticle,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateArticle>>,
-    TError,
-    { id: number; data: UpdateArticleBody },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateArticle>>,
-  TError,
-  { id: number; data: UpdateArticleBody },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {}
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateArticle>>,
-    { id: number; data: UpdateArticleBody }
-  > = (props) => {
-    const { id, data } = props ?? {}
-
-    return updateArticle(id, data)
-  }
-
-  return { mutationFn, ...mutationOptions }
-}
-
-export type UpdateArticleMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateArticle>>
->
-export type UpdateArticleMutationBody = UpdateArticleBody
-export type UpdateArticleMutationError =
-  | ArticleOperationParameterInavlid
-  | ArticleOperationNotFoundArticle
-
-export const useUpdateArticle = <
-  TError = ArticleOperationParameterInavlid | ArticleOperationNotFoundArticle,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateArticle>>,
-    TError,
-    { id: number; data: UpdateArticleBody },
-    TContext
-  >
-}): UseMutationResult<
-  Awaited<ReturnType<typeof updateArticle>>,
-  TError,
-  { id: number; data: UpdateArticleBody },
-  TContext
-> => {
-  const mutationOptions = getUpdateArticleMutationOptions(options)
-
-  return useMutation(mutationOptions)
-}
-export const deleteArticle = (id: number) => {
-  return restclient<ArticleAPIArticleDeleteResponse>({
-    url: `/articles/${id}`,
-    method: 'DELETE',
-  })
-}
-
-export const getDeleteArticleMutationOptions = <
-  TError = ArticleOperationNotFoundArticle,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteArticle>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteArticle>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const { mutation: mutationOptions } = options ?? {}
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteArticle>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
-
-    return deleteArticle(id)
-  }
-
-  return { mutationFn, ...mutationOptions }
-}
-
-export type DeleteArticleMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteArticle>>
->
-
-export type DeleteArticleMutationError = ArticleOperationNotFoundArticle
-
-export const useDeleteArticle = <
-  TError = ArticleOperationNotFoundArticle,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteArticle>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationResult<
-  Awaited<ReturnType<typeof deleteArticle>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteArticleMutationOptions(options)
-
-  return useMutation(mutationOptions)
 }

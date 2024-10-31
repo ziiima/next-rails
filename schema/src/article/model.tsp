@@ -37,3 +37,22 @@ namespace ArticleOperation {
   op editArticle(dto: UpdateArticleDTO): Article;
   op deleteArticle(id: ArticleId): ArticleId;
 }
+
+model Comment {
+  @key id: CommentId;
+  commenter: Commenter;
+  body: CommentBody;
+}
+
+scalar CommentId extends string;
+
+@minLength(1)
+@maxLength(255)
+scalar Commenter extends string;
+
+@minLength(1)
+scalar CommentBody extends string;
+
+namespace ArticleCommentOperation {
+
+}

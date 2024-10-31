@@ -1,4 +1,4 @@
-import { readArticle } from '@/generated/article/article'
+import { readArticle } from '@/generated/articles/articles'
 import { FC } from 'react'
 import { ArticleDelete } from '../../components/article-delete'
 

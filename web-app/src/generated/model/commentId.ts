@@ -5,6 +5,4 @@
  * OpenAPI spec version: 0.0.0
  */
 
-export interface BlogModuleBlog {
-  readonly id: number
-}
+export type CommentId = string

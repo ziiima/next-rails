@@ -3,13 +3,14 @@
  * feature name is article
  * created at 2024/10/29
  **/
-import "@typespec/http";
 import "@typespec/openapi";
+import "@typespec/rest";
 import "./model.tsp";
 import "../rest-util/error-response.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
+using TypeSpec.Rest;
 
 namespace ArticleAPI {
   model ArticleListResponse {
@@ -23,6 +24,12 @@ namespace ArticleAPI {
   model ArticleDeleteResponse {
     id: ArticleId;
   }
+
+  model ArticleDetailParameter {
+    @path
+    @segment("articles")
+    id: integer;
+  }
 }
 
 @tag("article")
@@ -32,15 +39,6 @@ interface Articles {
   @get
   listArticles(): ArticleAPI.ArticleListResponse;
 
-  @operationId("readArticle")
-  @get
-  resourceReadArticle(
-    @path id: integer,
-  ): ArticleAPI.ArticleResponse | ErrorResponse<
-    404,
-    ArticleOperation.NotFoundArticle
-  >;
-
   @operationId("createArticle")
   @post
   createArticle(
@@ -49,11 +47,24 @@ interface Articles {
     400,
     ArticleOperation.ParameterInavlid
   >;
+}
+
+@tag("article")
+@autoRoute
+interface ArticleItem {
+  @operationId("readArticle")
+  @get
+  resourceReadArticle(
+    ...ArticleAPI.ArticleDetailParameter,
+  ): ArticleAPI.ArticleResponse | ErrorResponse<
+    404,
+    ArticleOperation.NotFoundArticle
+  >;
 
   @operationId("updateArticle")
   @put
   editArticle(
-    @path id: integer,
+    ...ArticleAPI.ArticleDetailParameter,
     dto: ArticleOperation.UpdateArticleDTO,
   ): ArticleAPI.ArticleResponse | ErrorResponse<
     404,
@@ -63,8 +74,28 @@ interface Articles {
   @operationId("deleteArticle")
   @delete
   deleteArticle(
-    @path id: integer,
+    ...ArticleAPI.ArticleDetailParameter,
   ): ArticleAPI.ArticleDeleteResponse | ErrorResponse<
+    404,
+    ArticleOperation.NotFoundArticle
+  >;
+}
+
+namespace ArticleCommentAPI {
+  model ArticleCommentListResponse {
+    items: Comment[];
+  }
+}
+
+@tag("comment")
+@tag("article")
+@route("/articles/{id}/comments")
+interface ArticleComments {
+  @operationId("getArticleComments")
+  @get
+  getArticleComments(
+    ...ArticleAPI.ArticleDetailParameter,
+  ): ArticleCommentAPI.ArticleCommentListResponse | ErrorResponse<
     404,
     ArticleOperation.NotFoundArticle
   >;

@@ -8,3 +8,11 @@ test_model:
 
 .PHONY: test
 test: test_model test_request
+
+.PHONY: restart
+restart:
+	rails restart
+
+.PHONY: migrate
+migrate:
+	bin/rails db:migrate
