@@ -7,9 +7,11 @@
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
 import type {
+  ArticleAPIArticleDeleteResponse,
   ArticleAPIArticleListResponse,
   ArticleAPIArticleResponse,
   ArticleCommentAPIArticleCommentListResponse,
+  ArticleCommentAPIArticleCommentResponses,
 } from '.././model'
 
 export const getListArticlesResponseMock = (
@@ -37,6 +39,35 @@ export const getCreateArticleResponseMock = (
   ...overrideResponse,
 })
 
+export const getReadArticleResponseMock = (
+  overrideResponse: Partial<ArticleAPIArticleResponse> = {},
+): ArticleAPIArticleResponse => ({
+  article: {
+    body: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    title: faker.word.sample(),
+  },
+  ...overrideResponse,
+})
+
+export const getUpdateArticleResponseMock = (
+  overrideResponse: Partial<ArticleAPIArticleResponse> = {},
+): ArticleAPIArticleResponse => ({
+  article: {
+    body: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    title: faker.word.sample(),
+  },
+  ...overrideResponse,
+})
+
+export const getDeleteArticleResponseMock = (
+  overrideResponse: Partial<ArticleAPIArticleDeleteResponse> = {},
+): ArticleAPIArticleDeleteResponse => ({
+  id: faker.number.int({ min: undefined, max: undefined }),
+  ...overrideResponse,
+})
+
 export const getGetArticleCommentsResponseMock = (
   overrideResponse: Partial<ArticleCommentAPIArticleCommentListResponse> = {},
 ): ArticleCommentAPIArticleCommentListResponse => ({
@@ -46,8 +77,19 @@ export const getGetArticleCommentsResponseMock = (
   ).map(() => ({
     body: faker.word.sample(),
     commenter: faker.word.sample(),
-    id: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
   })),
+  ...overrideResponse,
+})
+
+export const getCreateArticleCommentResponseMock = (
+  overrideResponse: Partial<ArticleCommentAPIArticleCommentResponses> = {},
+): ArticleCommentAPIArticleCommentResponses => ({
+  comment: {
+    body: faker.word.sample(),
+    commenter: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+  },
   ...overrideResponse,
 })
 
@@ -99,6 +141,77 @@ export const getCreateArticleMockHandler = (
   })
 }
 
+export const getReadArticleMockHandler = (
+  overrideResponse?:
+    | ArticleAPIArticleResponse
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<ArticleAPIArticleResponse> | ArticleAPIArticleResponse),
+) => {
+  return http.get('*/articles/:id', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getReadArticleResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
+
+export const getUpdateArticleMockHandler = (
+  overrideResponse?:
+    | ArticleAPIArticleResponse
+    | ((
+        info: Parameters<Parameters<typeof http.put>[1]>[0],
+      ) => Promise<ArticleAPIArticleResponse> | ArticleAPIArticleResponse),
+) => {
+  return http.put('*/articles/:id', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getUpdateArticleResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
+
+export const getDeleteArticleMockHandler = (
+  overrideResponse?:
+    | ArticleAPIArticleDeleteResponse
+    | ((
+        info: Parameters<Parameters<typeof http.delete>[1]>[0],
+      ) =>
+        | Promise<ArticleAPIArticleDeleteResponse>
+        | ArticleAPIArticleDeleteResponse),
+) => {
+  return http.delete('*/articles/:id', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getDeleteArticleResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
+
 export const getGetArticleCommentsMockHandler = (
   overrideResponse?:
     | ArticleCommentAPIArticleCommentListResponse
@@ -123,8 +236,37 @@ export const getGetArticleCommentsMockHandler = (
     )
   })
 }
+
+export const getCreateArticleCommentMockHandler = (
+  overrideResponse?:
+    | ArticleCommentAPIArticleCommentResponses
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<ArticleCommentAPIArticleCommentResponses>
+        | ArticleCommentAPIArticleCommentResponses),
+) => {
+  return http.post('*/articles/:id/comments', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getCreateArticleCommentResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
 export const getArticleMock = () => [
   getListArticlesMockHandler(),
   getCreateArticleMockHandler(),
+  getReadArticleMockHandler(),
+  getUpdateArticleMockHandler(),
+  getDeleteArticleMockHandler(),
   getGetArticleCommentsMockHandler(),
+  getCreateArticleCommentMockHandler(),
 ]

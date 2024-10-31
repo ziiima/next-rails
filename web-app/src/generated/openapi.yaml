@@ -5,7 +5,6 @@ info:
 tags:
   - name: blog
   - name: article
-  - name: articles
   - name: comment
 paths:
   /articles:
@@ -69,7 +68,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
       tags:
-        - articles
+        - article
     put:
       operationId: updateArticle
       parameters:
@@ -94,7 +93,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
       tags:
-        - articles
+        - article
       requestBody:
         required: true
         content:
@@ -124,7 +123,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
       tags:
-        - articles
+        - article
   /articles/{id}/comments:
     get:
       operationId: getArticleComments
@@ -146,6 +145,43 @@ paths:
       tags:
         - comment
         - article
+    post:
+      operationId: createArticleComment
+      parameters:
+        - $ref: '#/components/parameters/ArticleAPI.ArticleDetailParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleCommentAPI.ArticleCommentResponses'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleOperation.ParameterInavlid'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleOperation.NotFoundArticle'
+      tags:
+        - comment
+        - article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dto:
+                  $ref: '#/components/schemas/ArticleCommentOperation.CreateCommentDTO'
+              required:
+                - dto
   /blogs:
     post:
       operationId: createBlog
@@ -262,6 +298,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Comment'
+    ArticleCommentAPI.ArticleCommentResponses:
+      type: object
+      required:
+        - comment
+      properties:
+        comment:
+          $ref: '#/components/schemas/Comment'
+    ArticleCommentOperation.CreateCommentDTO:
+      type: object
+      required:
+        - body
+        - commenter
+      properties:
+        body:
+          $ref: '#/components/schemas/CommentBody'
+        commenter:
+          $ref: '#/components/schemas/Commenter'
     ArticleId:
       type: integer
     ArticleOperation.CreateArticleDTO:
@@ -318,7 +371,7 @@ components:
       type: string
       minLength: 1
     CommentId:
-      type: string
+      type: integer
     Commenter:
       type: string
       minLength: 1

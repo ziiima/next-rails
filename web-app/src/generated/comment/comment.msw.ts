@@ -6,7 +6,10 @@
  */
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
-import type { ArticleCommentAPIArticleCommentListResponse } from '.././model'
+import type {
+  ArticleCommentAPIArticleCommentListResponse,
+  ArticleCommentAPIArticleCommentResponses,
+} from '.././model'
 
 export const getGetArticleCommentsResponseMock = (
   overrideResponse: Partial<ArticleCommentAPIArticleCommentListResponse> = {},
@@ -17,8 +20,19 @@ export const getGetArticleCommentsResponseMock = (
   ).map(() => ({
     body: faker.word.sample(),
     commenter: faker.word.sample(),
-    id: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
   })),
+  ...overrideResponse,
+})
+
+export const getCreateArticleCommentResponseMock = (
+  overrideResponse: Partial<ArticleCommentAPIArticleCommentResponses> = {},
+): ArticleCommentAPIArticleCommentResponses => ({
+  comment: {
+    body: faker.word.sample(),
+    commenter: faker.word.sample(),
+    id: faker.number.int({ min: undefined, max: undefined }),
+  },
   ...overrideResponse,
 })
 
@@ -46,4 +60,32 @@ export const getGetArticleCommentsMockHandler = (
     )
   })
 }
-export const getCommentMock = () => [getGetArticleCommentsMockHandler()]
+
+export const getCreateArticleCommentMockHandler = (
+  overrideResponse?:
+    | ArticleCommentAPIArticleCommentResponses
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) =>
+        | Promise<ArticleCommentAPIArticleCommentResponses>
+        | ArticleCommentAPIArticleCommentResponses),
+) => {
+  return http.post('*/articles/:id/comments', async (info) => {
+    await delay(1000)
+
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === 'function'
+            ? await overrideResponse(info)
+            : overrideResponse
+          : getCreateArticleCommentResponseMock(),
+      ),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    )
+  })
+}
+export const getCommentMock = () => [
+  getGetArticleCommentsMockHandler(),
+  getCreateArticleCommentMockHandler(),
+]

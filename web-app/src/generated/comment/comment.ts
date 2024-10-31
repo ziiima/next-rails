@@ -4,19 +4,25 @@
  * (title)
  * OpenAPI spec version: 0.0.0
  */
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type {
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query'
 import type {
   ArticleCommentAPIArticleCommentListResponse,
+  ArticleCommentAPIArticleCommentResponses,
   ArticleOperationNotFoundArticle,
+  ArticleOperationParameterInavlid,
+  CreateArticleCommentBody,
 } from '.././model'
 import { restclient } from '../../utils/rest-client'
 
@@ -158,4 +164,75 @@ export function useGetArticleComments<
   query.queryKey = queryOptions.queryKey
 
   return query
+}
+
+export const createArticleComment = (
+  id: number,
+  createArticleCommentBody: CreateArticleCommentBody,
+) => {
+  return restclient<ArticleCommentAPIArticleCommentResponses>({
+    url: `/articles/${id}/comments`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: createArticleCommentBody,
+  })
+}
+
+export const getCreateArticleCommentMutationOptions = <
+  TError = ArticleOperationParameterInavlid | ArticleOperationNotFoundArticle,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createArticleComment>>,
+    TError,
+    { id: number; data: CreateArticleCommentBody },
+    TContext
+  >
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createArticleComment>>,
+  TError,
+  { id: number; data: CreateArticleCommentBody },
+  TContext
+> => {
+  const { mutation: mutationOptions } = options ?? {}
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createArticleComment>>,
+    { id: number; data: CreateArticleCommentBody }
+  > = (props) => {
+    const { id, data } = props ?? {}
+
+    return createArticleComment(id, data)
+  }
+
+  return { mutationFn, ...mutationOptions }
+}
+
+export type CreateArticleCommentMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createArticleComment>>
+>
+export type CreateArticleCommentMutationBody = CreateArticleCommentBody
+export type CreateArticleCommentMutationError =
+  | ArticleOperationParameterInavlid
+  | ArticleOperationNotFoundArticle
+
+export const useCreateArticleComment = <
+  TError = ArticleOperationParameterInavlid | ArticleOperationNotFoundArticle,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createArticleComment>>,
+    TError,
+    { id: number; data: CreateArticleCommentBody },
+    TContext
+  >
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createArticleComment>>,
+  TError,
+  { id: number; data: CreateArticleCommentBody },
+  TContext
+> => {
+  const mutationOptions = getCreateArticleCommentMutationOptions(options)
+
+  return useMutation(mutationOptions)
 }

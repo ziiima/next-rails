@@ -44,7 +44,7 @@ model Comment {
   body: CommentBody;
 }
 
-scalar CommentId extends string;
+scalar CommentId extends integer;
 
 @minLength(1)
 @maxLength(255)
@@ -54,5 +54,12 @@ scalar Commenter extends string;
 scalar CommentBody extends string;
 
 namespace ArticleCommentOperation {
+  model CreateCommentDTO {
+    body: CommentBody;
+    commenter: Commenter;
+  }
 
+  model ParameterInvalid {}
+
+  op createComment(dto: CreateCommentDTO): Comment;
 }

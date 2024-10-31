@@ -85,6 +85,10 @@ namespace ArticleCommentAPI {
   model ArticleCommentListResponse {
     items: Comment[];
   }
+
+  model ArticleCommentResponses {
+    comment: Comment;
+  }
 }
 
 @tag("comment")
@@ -99,4 +103,14 @@ interface ArticleComments {
     404,
     ArticleOperation.NotFoundArticle
   >;
+
+  @operationId("createArticleComment")
+  @post
+  createArticleComment(
+    ...ArticleAPI.ArticleDetailParameter,
+    dto: ArticleCommentOperation.CreateCommentDTO,
+  ): ArticleCommentAPI.ArticleCommentResponses | ErrorResponse<
+    404,
+    ArticleOperation.NotFoundArticle
+  > | ErrorResponse<400, ArticleOperation.ParameterInavlid>;
 }
