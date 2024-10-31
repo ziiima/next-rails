@@ -92,7 +92,6 @@ namespace ArticleCommentAPI {
 }
 
 @tag("comment")
-@tag("article")
 @route("/articles/{id}/comments")
 interface ArticleComments {
   @operationId("getArticleComments")

@@ -5,9 +5,12 @@
  * OpenAPI spec version: 0.0.0
  */
 import type { ArticleBody } from './articleBody'
+import type { ArticleOperationCreateArticleDTOStatus } from './articleOperationCreateArticleDTOStatus'
 import type { ArticleTitle } from './articleTitle'
 
 export interface ArticleOperationCreateArticleDTO {
   body: ArticleBody
+  /** @nullable */
+  status: ArticleOperationCreateArticleDTOStatus
   title: ArticleTitle
 }

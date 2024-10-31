@@ -1,6 +1,6 @@
 class ArticleSerializer
     include ActiveModel::Serializers::JSON
-    delegate :id, :title, :body, to: :@article
+    delegate :id, :title, :body, :status, to: :@article
   
     def initialize(article)
       @article = article
@@ -8,5 +8,5 @@ class ArticleSerializer
   
     private
   
-    def attribute_names_for_serialization = %i[id title body]
+    def attribute_names_for_serialization = %i[id title body status]
 end

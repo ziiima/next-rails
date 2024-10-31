@@ -21,6 +21,6 @@ class CommentsController < ApplicationController
     end
 
     def upsert_parameter
-        params.require(:dto).permit(:commenter, :body).merge(article: @article)
+        params.require(:dto).permit(:commenter, :body, :status).merge(article: @article)
     end
 end

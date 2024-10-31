@@ -6,6 +6,7 @@
  */
 import { faker } from '@faker-js/faker'
 import { HttpResponse, delay, http } from 'msw'
+import { CommentStatus } from '.././model'
 import type {
   ArticleCommentAPIArticleCommentListResponse,
   ArticleCommentAPIArticleCommentResponses,
@@ -21,6 +22,9 @@ export const getGetArticleCommentsResponseMock = (
     body: faker.word.sample(),
     commenter: faker.word.sample(),
     id: faker.number.int({ min: undefined, max: undefined }),
+    status: faker.helpers.arrayElement([
+      faker.helpers.arrayElement(Object.values(CommentStatus)),
+    ]),
   })),
   ...overrideResponse,
 })
@@ -32,6 +36,9 @@ export const getCreateArticleCommentResponseMock = (
     body: faker.word.sample(),
     commenter: faker.word.sample(),
     id: faker.number.int({ min: undefined, max: undefined }),
+    status: faker.helpers.arrayElement([
+      faker.helpers.arrayElement(Object.values(CommentStatus)),
+    ]),
   },
   ...overrideResponse,
 })

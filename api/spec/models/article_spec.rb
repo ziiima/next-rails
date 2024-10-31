@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Article, type: :model do
-  let(:article) { Article.new(title: "title", body: "abcdefghij") }
+  let(:article) { Article.new(title: "title", body: "abcdefghij", status: "public") }
   describe 'invalid title' do
     it 'when null' do
       article.update({ title: nil })

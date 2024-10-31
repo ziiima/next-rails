@@ -6,8 +6,10 @@
  */
 import type { CommentBody } from './commentBody'
 import type { Commenter } from './commenter'
+import type { CommentStatus } from './commentStatus'
 
 export interface ArticleCommentOperationCreateCommentDTO {
   body: CommentBody
   commenter: Commenter
+  status?: CommentStatus
 }

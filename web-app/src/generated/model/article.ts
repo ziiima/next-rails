@@ -6,6 +6,7 @@
  */
 import type { ArticleBody } from './articleBody'
 import type { ArticleId } from './articleId'
+import type { ArticleStatusProperty } from './articleStatusProperty'
 import type { ArticleTitle } from './articleTitle'
 
 /**
@@ -16,5 +17,7 @@ created at 2024/10/29
 export interface Article {
   body: ArticleBody
   id: ArticleId
+  /** @nullable */
+  status: ArticleStatusProperty
   title: ArticleTitle
 }

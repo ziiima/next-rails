@@ -7,9 +7,12 @@
 import type { CommentBody } from './commentBody'
 import type { Commenter } from './commenter'
 import type { CommentId } from './commentId'
+import type { CommentStatusProperty } from './commentStatusProperty'
 
 export interface Comment {
   body: CommentBody
   commenter: Commenter
   id: CommentId
+  /** @nullable */
+  status: CommentStatusProperty
 }

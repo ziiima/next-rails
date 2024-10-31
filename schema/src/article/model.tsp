@@ -7,6 +7,7 @@ model Article {
   @key id: ArticleId;
   title: ArticleTitle;
   body: ArticleBody;
+  status: ArticleStatus | null;
 }
 
 @minLength(1)
@@ -18,10 +19,17 @@ scalar ArticleBody extends string;
 
 scalar ArticleId extends integer;
 
+enum ArticleStatus {
+  public,
+  private,
+  archived,
+}
+
 namespace ArticleOperation {
   model CreateArticleDTO {
     title: ArticleTitle;
     body: ArticleBody;
+    status: CommentStatus | null;
   }
 
   model UpdateArticleDTO {
@@ -42,6 +50,7 @@ model Comment {
   @key id: CommentId;
   commenter: Commenter;
   body: CommentBody;
+  status: CommentStatus | null;
 }
 
 scalar CommentId extends integer;
@@ -53,10 +62,17 @@ scalar Commenter extends string;
 @minLength(1)
 scalar CommentBody extends string;
 
+enum CommentStatus {
+  public,
+  private,
+  archived,
+}
+
 namespace ArticleCommentOperation {
   model CreateCommentDTO {
     body: CommentBody;
     commenter: Commenter;
+    status?: CommentStatus;
   }
 
   model ParameterInvalid {}

@@ -13,7 +13,7 @@ RSpec.describe "Articles", type: :request do
     include Committee::Rails::Test::Methods
     it "ok" do
       expect {
-        post "/articles", params: { dto: { title: "title", body: "bodybodybody" } }
+        post "/articles", params: { dto: { title: "title", body: "bodybodybody", status: "public" } }
       }.to change(Article, :count).by(1)
       assert_response_schema_confirm(200)
     end
@@ -31,17 +31,17 @@ RSpec.describe "Articles", type: :request do
 
   describe "PUT /articles/:id" do
     include Committee::Rails::Test::Methods
-    let(:article) { Article.create(title: "title", body: "bodybodybody") }
+    let(:article) { Article.create(title: "title", body: "bodybodybody", status: "private") }
 
     it "ok" do
-      put "/articles/#{article.id}", params: { dto: { title: "titlev2", body: "bodybodybodyv2" } }
+      put "/articles/#{article.id}", params: { dto: { title: "title", body: "bodybodybody", status: "public" } }
       assert_response_schema_confirm(200)
     end
   end
 
   describe "DELETE /articles/:id" do
     include Committee::Rails::Test::Methods
-    let(:article) { Article.create!(title: "title", body: "bodybodybody") }
+    let(:article) { Article.create!(title: "title", body: "bodybodybody", status: "private") }
 
     it "ok" do
       delete "/articles/#{article.id}"

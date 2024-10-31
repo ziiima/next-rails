@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Comments", type: :request do
   describe "GET /articles/{id}/comments" do
     include Committee::Rails::Test::Methods
-    let(:article) { Article.create(title: "title", body: "bodybodybody") }
+    let(:article) { Article.create!(title: "title", body: "bodybodybody", status: "public") }
     it "ok" do
       get "/articles/#{article.id}/comments"
       assert_response_schema_confirm(200)
@@ -12,11 +12,11 @@ RSpec.describe "Comments", type: :request do
 
   describe "POST /articles/{article_id}/comments" do
     include Committee::Rails::Test::Methods
-    let(:article) { Article.create(title: "title", body: "bodybodybody") }
+    let(:article) { Article.create!(title: "title", body: "bodybodybody", status: "public") }
 
     it "ok" do
       expect {
-        post "/articles/#{article.id}/comments", params: { dto: { commenter: "me", body: "comment_body" } }
+        post "/articles/#{article.id}/comments", params: { dto: { commenter: "me", body: "comment_body", status: "private" } }
       }.to change(Comment, :count).by(1)
       assert_response_schema_confirm(200)
     end

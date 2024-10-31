@@ -49,6 +49,6 @@ class ArticlesController < ApplicationController
   end
 
   def upsert_article_params
-    params.require(:dto).permit(:title, :body)
+    params.require(:dto).permit(:title, :body, :status)
   end
 end
