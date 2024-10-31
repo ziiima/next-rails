@@ -2,8 +2,8 @@
 import { FC } from 'react'
 import { ArticleDetail } from './article-detail'
 import { Article } from '@/generated/model'
-import { deleteArticle } from '@/generated/article/article'
 import { useRouter } from 'next/navigation'
+import { deleteArticle } from '@/generated/articles/articles'
 
 export type ArticleDeleteProps = {
   article: Article

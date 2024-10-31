@@ -5,7 +5,7 @@ import { ArticleList } from './components/article-list'
 
 const queryClient = new QueryClient()
 
-export const articlesPage = () => {
+export const ArticlesPage = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="grid grid-cols-4">
@@ -21,4 +21,4 @@ export const articlesPage = () => {
   )
 }
 
-export default articlesPage
+export default ArticlesPage
