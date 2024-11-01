@@ -33,6 +33,24 @@ export const Navigation = () => {
           <ActiveLink
             activeClassName="active"
             className="nav-link"
+            href="/about2"
+          >
+            About2
+          </ActiveLink>
+        </li>
+        <li>
+          <ActiveLink
+            activeClassName="active"
+            className="nav-link"
+            href="/another"
+          >
+            Another
+          </ActiveLink>
+        </li>
+        <li>
+          <ActiveLink
+            activeClassName="active"
+            className="nav-link"
             href="/blog"
           >
             Blog

@@ -10,6 +10,7 @@ questions:
 # Variables
 
 - PageTitle: `{{ inputs.name | pascal }}Page`
+- FileName: `{{ inputs.name | camel }}`
 
 # `{{ inputs.name }}/page.tsx`
 
@@ -30,4 +31,5 @@ export const {{ PageTitle }} = () => {
 }
 
 export default {{ PageTitle }}
+
 ```
