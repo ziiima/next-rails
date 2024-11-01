@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "gen:api": "orval --config ./orval.config.ts",
-    "gen:page": "scaffdog generate",
+    "gen:page": "scaffdog generate page",
+    "gen:component": "scaffdog generate component",
+    "gen:template": "scaffdog create",
     "cli:scaffdog": "scaffdog"
   },
   "dependencies": {

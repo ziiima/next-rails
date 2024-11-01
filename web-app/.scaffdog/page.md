@@ -1,7 +1,7 @@
 ---
 name: 'page'
-root: './src/app'
-output: '.'
+root: 'src/app'
+output: '**/*'
 ignore: []
 questions:
   name: 'Please enter name of page'
@@ -10,9 +10,9 @@ questions:
 # Variables
 
 - PageTitle: `{{ inputs.name | pascal }}Page`
-- FileName: `{{ inputs.name | camel }}`
+- FileName: `{{ inputs.name | kebab }}`
 
-# `{{ inputs.name }}/page.tsx`
+# `{{ FileName }}/page.tsx`
 
 ```typescript
 import { Navigation } from '@/components/Navigation'
