@@ -1,10 +1,13 @@
 import { Navigation } from '../components/Navigation'
+import { HelloWorld } from './_components/HelloWorld'
 
 export default function Home() {
   return (
-    <>
+    <div>
       <Navigation />
-      <p>Hello, I&apos;m the index page</p>
-    </>
+      <div>
+        <HelloWorld />
+      </div>
+    </div>
   )
 }
