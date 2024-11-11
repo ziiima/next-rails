@@ -5,6 +5,9 @@ output: '**/*'
 ignore: []
 questions:
   name: 'Please enter name of page'
+  style:
+    confirm: 'do you need css?'
+    initial: false
 ---
 
 # Variables
@@ -15,9 +18,9 @@ questions:
 # `{{ FileName }}/page.tsx`
 
 ```typescript
-import { Navigation } from '@/components/Navigation'
+{{ if inputs.style }}import styles from "./{{ FileName }}.module.css"{{ end }}
 
-export const {{ PageTitle }} = () => {
+const {{ PageTitle }} = async () => {
   return (
     <div className="grid grid-cols-4">
       <div>
@@ -32,4 +35,11 @@ export const {{ PageTitle }} = () => {
 
 export default {{ PageTitle }}
 
+```
+
+# `{{ !inputs.style && '!' }}{{ FileName }}/{{ FileName }}.module.css`
+
+```
+.main {
+}
 ```

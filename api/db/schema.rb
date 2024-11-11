@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_01_043443) do
-  create_table "articles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2024_11_11_055543) do
+  create_table "articles", charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -19,8 +19,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_01_043443) do
     t.string "status"
   end
 
-  create_table "blogs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "title"
+  create_table "blogs", charset: "utf8mb3", force: :cascade do |t|
+    t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -28,6 +28,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_01_043443) do
   create_table "book_orders", charset: "utf8mb3", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "book_id", null: false
+    t.integer "order_shop_id"
+    t.integer "order_id"
+    t.index ["book_id"], name: "index_book_orders_on_book_id"
+    t.index ["order_shop_id", "order_id"], name: "fk_rails_6e76a99cc8"
   end
 
   create_table "books", charset: "utf8mb3", force: :cascade do |t|
@@ -47,6 +52,33 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_01_043443) do
     t.index ["article_id"], name: "index_comments_on_article_id"
   end
 
+  create_table "orders", primary_key: ["shop_id", "id"], charset: "utf8mb3", force: :cascade do |t|
+    t.integer "shop_id", null: false
+    t.integer "id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "post_authors", charset: "utf8mb3", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", charset: "utf8mb3", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", primary_key: ["store_id", "sku"], charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "store_id", null: false
+    t.string "sku", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "todos", charset: "utf8mb3", force: :cascade do |t|
     t.text "text", null: false
     t.datetime "created_at", null: false
@@ -59,5 +91,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_01_043443) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "book_orders", "books"
+  add_foreign_key "book_orders", "orders", column: ["order_shop_id", "order_id"], primary_key: ["shop_id", "id"], on_delete: :cascade
   add_foreign_key "comments", "articles"
 end

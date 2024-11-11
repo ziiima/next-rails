@@ -1,0 +1,15 @@
+<% module_namespacing do -%>
+class <%= class_name %>Serializer
+  include ActiveModel::Serializers::JSON
+  <% unless attributes.empty? %>delegate <%= attributes.map { |attribute| ":#{attribute.name}" }.join(", ") %>, to: :@<%= file_name %><% end %>
+
+  def initialize(<%= file_name %>)
+    @<%= file_name %> = <%= file_name %>
+  end
+
+  <% unless attributes.empty? %>
+  private
+    def attribute_names_for_serialization = %i[<%= attributes.map(&:name).join(' ') %>]
+  <% end %>
+end
+<% end -%>

@@ -5,3 +5,4 @@ import "@typespec/openapi3";
 import "./blog/route.tsp";
 import "./news/rotue.tsp";
 import "./article/route.tsp";
+import "./post/route.tsp";

@@ -10,7 +10,11 @@
     "gen:api": "orval --config ./orval.config.ts",
     "gen:page": "scaffdog generate page",
     "gen:component": "scaffdog generate component",
-    "gen:template": "scaffdog create",
+    "gen:layout": "scaffdog generate layout",
+    "gen:server-action": "scaffdog generate server-action",
+    "gen:error": "scaffdog generate error",
+    "gen:loading": "scaffdog generate loading",
+    "scaff:template": "scaffdog create",
     "cli:scaffdog": "scaffdog"
   },
   "dependencies": {

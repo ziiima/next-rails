@@ -7,7 +7,7 @@
     "cli:spectral": "spectral",
     "cli:ts-node": "ts-node",
     "cli:scaffdog": "scaffdog",
-    "gen:resource": "scaffdog generate",
+    "gen:feature": "scaffdog generate scaff && npm run fmt",
     "gen:api": "tsp compile ./src",
     "fmt": "tsp format \"**/*.tsp\"",
     "fmt:check": "tsp format --check \"**/*.tsp\"",
