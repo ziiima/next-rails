@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_31_070152) do
-  create_table "articles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2024_11_12_005530) do
+  create_table "articles", charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -19,8 +19,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_31_070152) do
     t.string "status"
   end
 
-  create_table "blogs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "title"
+  create_table "blogs", charset: "utf8mb3", force: :cascade do |t|
+    t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -47,6 +47,23 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_31_070152) do
     t.index ["article_id"], name: "index_comments_on_article_id"
   end
 
+  create_table "order_items", charset: "utf8mb3", force: :cascade do |t|
+    t.string "title"
+    t.integer "order_id", null: false
+    t.integer "order_shop_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id", "order_shop_id"], name: "fk_rails_1d7a363cde"
+  end
+
+  create_table "orders", primary_key: ["id", "shop_id"], charset: "utf8mb3", force: :cascade do |t|
+    t.integer "shop_id", null: false
+    t.integer "id", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -54,4 +71,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_31_070152) do
   end
 
   add_foreign_key "comments", "articles"
+  add_foreign_key "order_items", "orders", column: ["order_id", "order_shop_id"], primary_key: ["id", "shop_id"]
 end

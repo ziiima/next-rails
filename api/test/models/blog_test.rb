@@ -5,21 +5,21 @@ class BlogTest < ActiveSupport::TestCase
     title = ""
     blog = build_blog(title)
     assert_equal(false, blog.valid?)
-    assert_includes blog.errors[:title], "is too short (minimum is 1 character)" 
+    assert_includes blog.errors[:title], "is too short (minimum is 1 character)"
   end
 
   test "should invalid when title is over 256" do
     title = "a" * 256
     blog = build_blog(title)
     assert_equal(false, blog.valid?)
-    assert_includes blog.errors[:title], "is too long (maximum is 255 characters)" 
+    assert_includes blog.errors[:title], "is too long (maximum is 255 characters)"
   end
 
   test "should invalid when title is null" do
     title = nil
     blog = build_blog(title)
     assert_equal(false, blog.valid?)
-    assert_includes blog.errors[:title], "is too short (minimum is 1 character)" 
+    assert_includes blog.errors[:title], "is too short (minimum is 1 character)"
   end
 
   test "should valid when length of title is 1" do
