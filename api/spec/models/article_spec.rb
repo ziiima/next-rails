@@ -26,7 +26,7 @@ RSpec.describe Article, type: :model do
 
   describe "valid title" do
     it "should valid when length of 1" do
-      article.update(title: "t" )
+      article.update(title: "t")
       expect(article.valid?).to eq true
     end
 

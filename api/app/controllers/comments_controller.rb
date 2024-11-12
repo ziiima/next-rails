@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-    before_action :find_article, only: [:index, :create]
+    before_action :find_article, only: [ :index, :create ]
 
     def index
         render json: ArticleCommentListResponseSerializer.new(@article.comments)
