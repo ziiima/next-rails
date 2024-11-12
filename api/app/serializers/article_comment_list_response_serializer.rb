@@ -3,7 +3,7 @@ class ArticleCommentListResponseSerializer
     attr_accessor :items
 
     def initialize(comments)
-        @items = comments.map { |comment| ArticleCommentSerializer.new(comment)}
+        @items = comments.map { |comment| ArticleCommentSerializer.new(comment) }
     end
 
     private

@@ -1,7 +1,7 @@
 ---
 name: 'scaff'
 root: './src'
-output: 'src/*'
+output: '**/*'
 ignore: []
 questions:
   name: 'Please enter name of model'

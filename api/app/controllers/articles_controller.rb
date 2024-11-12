@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :find_article, only: [:show, :update, :destroy]
+  before_action :find_article, only: [ :show, :update, :destroy ]
   def index
     @articles = Article.all
     render json: ArticleListResponseSerializer.new(@articles), status: :ok
@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
   def destroy
     @article.destroy
     unless @article.destroyed?
-      render json: nil, status: :interinternal_server_error 
+      render json: nil, status: :interinternal_server_error
       return
     end
     render json: ArticleDeleteResponseSerializer.new(@article)
