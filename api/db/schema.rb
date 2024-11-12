@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_11_055543) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_12_034204) do
   create_table "articles", charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
@@ -29,8 +29,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_11_055543) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "book_id", null: false
-    t.integer "order_shop_id"
-    t.integer "order_id"
+    t.integer "order_shop_id", null: false
+    t.integer "order_id", null: false
     t.index ["book_id"], name: "index_book_orders_on_book_id"
     t.index ["order_shop_id", "order_id"], name: "fk_rails_6e76a99cc8"
   end
@@ -55,6 +55,22 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_11_055543) do
   create_table "orders", primary_key: ["shop_id", "id"], charset: "utf8mb3", force: :cascade do |t|
     t.integer "shop_id", null: false
     t.integer "id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "organization_users", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_organization_users_on_organization_id"
+    t.index ["user_id"], name: "index_organization_users_on_user_id"
+  end
+
+  create_table "organizations", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -94,4 +110,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_11_055543) do
   add_foreign_key "book_orders", "books"
   add_foreign_key "book_orders", "orders", column: ["order_shop_id", "order_id"], primary_key: ["shop_id", "id"], on_delete: :cascade
   add_foreign_key "comments", "articles"
+  add_foreign_key "organization_users", "organizations"
+  add_foreign_key "organization_users", "users"
 end
