@@ -7,12 +7,8 @@ import { useRouter } from 'next/navigation'
 const ArticleCreatePage = () => {
   const { push } = useRouter()
   const onSubmit = async (dto: CreateArticleBody) => {
-    try {
-      const res = await createArticle(dto)
-      push(`/articles/${res.article.id}`)
-    } catch (error: unknown) {
-      console.log(error)
-    }
+    const res = await createArticle(dto)
+    push(`/articles/${res.article.id}`)
   }
   return (
     <div>

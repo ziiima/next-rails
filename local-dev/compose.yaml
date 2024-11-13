@@ -42,6 +42,7 @@ services:
       - ../web-app:/usr/src/app
     ports:
       - "3001:3000"
+      - "3100:3100"
   schema_container:
     container_name: schema_container
     build:

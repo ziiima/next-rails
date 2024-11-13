@@ -12,12 +12,8 @@ export type ArticleDeleteProps = {
 export const ArticleDelete: FC<ArticleDeleteProps> = ({ article }) => {
   const { push } = useRouter()
   const deleteOne = async () => {
-    try {
-      await deleteArticle(article.id)
-      push(`/articles`)
-    } catch (error: unknown) {
-      console.log(error)
-    }
+    await deleteArticle(article.id)
+    push(`/articles`)
   }
   return (
     <div>

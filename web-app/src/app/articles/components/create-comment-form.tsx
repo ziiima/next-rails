@@ -16,11 +16,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({
 }) => {
   const onSubmit = useCallback(
     async (dto: CreateArticleCommentBody) => {
-      try {
-        await createArticleComment(articleId, dto)
-      } catch (error: unknown) {
-        console.trace(error)
-      }
+      await createArticleComment(articleId, dto)
     },
     [articleId],
   )
