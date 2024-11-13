@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_12_034204) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_13_055433) do
   create_table "articles", charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
@@ -60,7 +60,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_12_034204) do
   end
 
   create_table "organization_users", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", null: false
     t.bigint "organization_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -93,6 +92,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_12_034204) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.decimal "price", precision: 10
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "todos", charset: "utf8mb3", force: :cascade do |t|
@@ -105,6 +108,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_12_034204) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "book_orders", "books"
@@ -112,4 +117,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_12_034204) do
   add_foreign_key "comments", "articles"
   add_foreign_key "organization_users", "organizations"
   add_foreign_key "organization_users", "users"
+  add_foreign_key "products", "users"
 end
