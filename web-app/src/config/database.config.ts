@@ -1,4 +1,4 @@
-import { ConnectionOptions, createConnection } from 'mysql2/promise'
+import { ConnectionOptions, createConnection, Connection } from 'mysql2/promise'
 
 export const databaseConfig: ConnectionOptions = {
   host: 'db_container',
@@ -15,6 +15,6 @@ export const databaseConfig: ConnectionOptions = {
   keepAliveInitialDelay: 0,
 }
 
-export const withConnection = async () => {
-  return await createConnection(databaseConfig)
+export const withConnection = async (): Promise<Connection> => {
+  return createConnection(databaseConfig)
 }

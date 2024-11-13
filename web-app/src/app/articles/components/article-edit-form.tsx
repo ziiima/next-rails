@@ -16,12 +16,8 @@ export const ArticleEditForm: FC<ArticleEditFormProps> = ({ article }) => {
   const { push } = useRouter()
   const onSubmit = useCallback(
     async (dto: UpdateArticleBody) => {
-      try {
-        const res = await updateArticle(article.id, dto)
-        push(`/articles/${res.article.id}`)
-      } catch (error: unknown) {
-        console.log(error)
-      }
+      const res = await updateArticle(article.id, dto)
+      push(`/articles/${res.article.id}`)
     },
     [push, article.id],
   )

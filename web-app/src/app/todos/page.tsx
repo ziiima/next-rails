@@ -30,18 +30,14 @@ async function TodosPage() {
   async function createInvoice() {
     'use server'
     const connection = await withConnection()
-    try {
-      const result = await connection.execute(
-        {
-          sql: 'INSERT INTO `todos`(`text`, `created_at`, `updated_at`) VALUES (?, now(), now() )',
-        },
-        ['todos'],
-      )
-      revalidatePath('/todos')
-      console.log(result)
-    } catch (error: unknown) {
-      console.log(error)
-    }
+
+    await connection.execute(
+      {
+        sql: 'INSERT INTO `todos`(`text`, `created_at`, `updated_at`) VALUES (?, now(), now() )',
+      },
+      ['todos'],
+    )
+    revalidatePath('/todos')
   }
   const todoList = await getTodos()
   return (

@@ -1,6 +1,6 @@
-import { PostList } from "./_components/PostList"
+import { PostList } from './_components/PostList'
 
-const PostsPage = async () => {
+const PostsPage = () => {
   return (
     <div className="grid grid-cols-4">
       <div>

@@ -3,23 +3,13 @@ import styles from './environment.module.css'
 import { Code } from '../_components/Code'
 
 export const EnvironmentPage = () => {
-  // The following console.log statements will only be executed on Node.js.
-  // Check the terminal to see the environment variables.
-  // Using the variables below in the browser will return `undefined`.
-  // Next.js doesn't expose environment variables unless they start with `NEXT_PUBLIC_`.
-  console.log('[Node.js only] ENV_VARIABLE:', process.env.ENV_VARIABLE)
-  console.log(
-    '[Node.js only] ENV_LOCAL_VARIABLE:',
-    process.env.ENV_LOCAL_VARIABLE,
-  )
-
   return (
     <div className={styles.container}>
       <div className={styles.card}>
         <h1>Environment Variables with Next.js</h1>
         <hr className={styles.hr} />
         <p>
-          In the table below you'll see how{' '}
+          In the table below you&apos;ll see how{' '}
           <Link href="https://nextjs.org/docs/app/building-your-application/configuring/environment-variables">
             environment variables can be exposed to the browser
           </Link>{' '}
@@ -79,20 +69,22 @@ export const EnvironmentPage = () => {
           <code>cp .env.local.example .env.local</code>
         </pre>
         <p>
-          Variables in <Code>.env.production</Code> won't be available if the
-          app is running in development:
+          Variables in <Code>.env.production</Code> won&apos;t be available if
+          the app is running in development:
         </p>
         <pre>
           <code>npm run dev</code>
         </pre>
         <p>
-          Similarly, variables in <Code>.env.development</Code> won't be
+          Similarly, variables in <Code>.env.development</Code> won&apos;t be
           available if the app is running on production:
         </p>
         <pre>
           <code>npm run build && npm run start</code>
         </pre>
-        <p>Once you run the app, you'll see logs like these in the terminal:</p>
+        <p>
+          Once you run the app, you&apos;ll see logs like these in the terminal:
+        </p>
         <pre>
           <code>
             info - Loaded env from /home/user/../.env.local{'\n'}

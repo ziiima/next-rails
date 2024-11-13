@@ -1,17 +1,21 @@
 import { restclient } from '@/utils/rest-client'
 
 const getDashboard = async () => {
-  const data = await restclient({
+  await restclient({
     url: '/dashboard',
     method: 'GET',
   })
-  console.log(data)
   return []
 }
 
 const DashboardPage = async () => {
   const list = await getDashboard()
-  return <h1>Hello, Dashboard Page!</h1>
+  return (
+    <div>
+      <h1>Hello, Dashboard Page!</h1>
+      <div>{list.length}</div>
+    </div>
+  )
 }
 
 export default DashboardPage

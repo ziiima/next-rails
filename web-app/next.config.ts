@@ -1,7 +1,20 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  poweredByHeader: false,
+  productionBrowserSourceMaps: true,
+  reactStrictMode: true,
+  pageExtensions: ['ts', 'tsx'],
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: true,
+    },
+  },
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
+}
 
-export default nextConfig;
+export default nextConfig
