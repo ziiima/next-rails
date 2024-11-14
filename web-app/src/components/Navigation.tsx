@@ -65,6 +65,15 @@ export const Navigation = () => {
             Dynamic Route
           </ActiveLink>
         </li>
+        <li>
+          <ActiveLink
+            activeClassName="active"
+            className="nav-link"
+            href="/counter"
+          >
+            Counter
+          </ActiveLink>
+        </li>
       </ul>
     </nav>
   )
