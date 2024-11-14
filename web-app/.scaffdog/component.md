@@ -17,7 +17,7 @@ questions:
 
 - ComponentName: `{{ inputs.name | pascal }}`
 - OutputFeatureDirectory: `{{ ComponentName }}`
-- OutputDirectory: `{{ OutputFeatureDirectory }}`
+- OutputDirectory: `{{ if inputs.directory }}_components/{{ end }}{{ OutputFeatureDirectory }}`
 
 # `{{ OutputDirectory }}/index.tsx`
 
@@ -37,7 +37,7 @@ export type {{ ComponentName }}Props = {}
 export const {{ ComponentName }}: FC<{{ ComponentName }}Props> = () => {
   return (
     <div{{ if inputs.style }} className={styles.main}{{ end }}>
-      <h1>Geneeated {{ ComponentName }}</h1>
+      <h1>Geneated {{ ComponentName }}</h1>
     </div>
   )
 }
