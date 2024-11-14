@@ -1,10 +1,10 @@
 ---
 name: 'page'
 root: 'src/app'
-output: '**/*'
+output: '.'
 ignore: []
 questions:
-  name: 'Please enter name of page'
+  name: 'Please enter name of page ex: sample/sample'
   style:
     confirm: 'do you need css?'
     initial: false
@@ -12,10 +12,15 @@ questions:
 
 # Variables
 
-- PageTitle: `{{ inputs.name | pascal }}Page`
-- FileName: `{{ inputs.name | kebab }}`
+- BaseName: `{{ inputs.name | split "/" | slice -1 }}`
+- BasePath: `{{ join(slice(split(inputs.name, "/"), 0, len(split(inputs.name, "/")) - 1), "/") }}`
+- AppDir: `{{ "src/app" }}`
+- E2EDir: `{{ "e2e" }}`
 
-# `{{ FileName }}/page.tsx`
+- PageTitle: `{{ BaseName | pascal }}Page`
+- FileName: `{{ BaseName | kebab }}`
+
+# `{{ resolve AppDir BasePath FileName }}/page.tsx`
 
 ```typescript
 import { type FC } from 'react'
@@ -40,9 +45,20 @@ export default {{ PageTitle }}
 
 ```
 
-# `{{ !inputs.style && '!' }}{{ FileName }}/{{ FileName }}.module.css`
+# `{{ !inputs.style && '!' }}{{ resolve AppDir BasePath FileName }}/{{ FileName }}.module.css`
 
 ```
 .main {
 }
+```
+
+# `{{ resolve E2EDir BasePath }}/{{ FileName }}.spec.ts`
+
+```typescript
+import { test, expect } from '@playwright/test'
+
+test('should navigate to the page', async ({ page }) => {
+  await page.goto('{{ BasePath }}/{{ FileName }}')
+  await expect(page).toHaveURL('{{ BasePath }}/{{ FileName }}')
+})
 ```
